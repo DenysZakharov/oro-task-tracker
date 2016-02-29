@@ -1,0 +1,131 @@
+datagrid:
+    issue-grid:
+        source:
+            type: orm
+            acl_resource: issue_view
+            query:
+                select:
+                    - issue.id
+                    - issue.code
+                    - issue.type
+                    - issue.summary
+                    - issuePriority.label as priorityLabel
+                    - issuePriority.order as priorityOrder
+                    - issueResolution.label as resolutionLabel
+                    - issueAssignee.id assigneeId
+                    - issueReporter.id reporterId
+                    - issue.createdAt
+                    - issue.updatedAt
+                    - workflowStep.label as workflowStepLabel
+                from:
+                    - { table: IssueBundle:Issue, alias: issue }
+
+                join:
+                    left:
+                        - { join: issue.priority, alias: issuePriority }
+                        - { join: issue.resolution, alias: issueResolution }
+                        - { join: issue.reporter, alias: issueReporter }
+                        - { join: issue.assignee, alias: issueAssignee }
+        columns:
+            code:
+                label:         oro.issue.code.label
+            type:
+                label:         oro.issue.type.label
+            summary:
+                label:         oro.issue.summary.label
+            priorityLabel:
+                label:         oro.issue.priority.label
+            resolutionLabel:
+                label:         oro.issue.resolution.label
+            createdAt:
+                label:         oro.issue.created.label
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.issue.updated.label
+                frontend_type: datetime
+            workflowStepLabel:
+                label:         oro.issue.workflow_step.label
+        sorters:
+            columns:
+                code:
+                    data_name: issue.code
+                type:
+                    data_name: issue.type
+                summary:
+                    data_name: issue.summary
+                priorityLabel:
+                    data_name: issuePriority.order
+                resolutionLabel:
+                    data_name: resolutionLabel
+                issueReporterName:
+                    data_name: issueReporterName
+                issueAssigneeName:
+                    data_name: issueAssigneeName
+                createdAt:
+                    data_name: issue.createdAt
+                updatedAt:
+                    data_name: issue.updatedAt
+                workflowStepLabel:
+                    data_name: workflowStep.stepOrder
+            default:
+                updatedAt: DESC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    data_name: issue.code
+                type:
+                    type:      choice
+                    data_name: issue.type
+                    options:
+                        field_options:
+                            choices: @oro_issue.grid_helper->getTypeChoices
+                            translatable_options: false
+                summary:
+                    type:      string
+                    data_name: issue.summary
+                priority:
+                    label:     Priority
+                    type:      choice
+                    data_name: issuePriority.name
+                    options:
+                        field_options:
+                            choices: @oro_issue.grid_helper->getPriorityChoices()
+                resolution:
+                    label:     Resolution
+                    type:      choice
+                    data_name: issue.resolution
+                    options:
+                        field_options:
+                            choices: @oro_issue.grid_helper->getResolutionChoices()
+                reporter:
+                    label:     Reporter
+                    type:      string
+                    data_name: issueReporterName
+                assignee:
+                    label:     Assignee
+                    type:      string
+                    data_name: issueAssigneeName
+                createdAt:
+                    type:      datetime
+                    data_name: issue.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: issue.updatedAt
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      issue_view
+                params:     [ id ]
+        actions:
+            view:
+                type:          navigate
+                acl_resource:  issue_view
+                label:         oro.grid.action.view
+                icon:          eye-open
+                link:          view_link
+                rowAction:     true
+        options:
+            entity_pagination: true
+
