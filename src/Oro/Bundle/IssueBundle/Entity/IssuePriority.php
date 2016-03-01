@@ -3,6 +3,8 @@
 namespace Oro\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * @ORM\Table(name="issue_priority")
@@ -17,10 +19,16 @@ class IssuePriority
     const PRIORITY_BLOCKER  = 'blocker';
 
     /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=50, nullable=false)
-     * @ORM\Id
+     * @ORM\Column(name="code", type="string", length=50)
      */
     protected $code;
 
@@ -38,13 +46,6 @@ class IssuePriority
      */
     protected $priority;
 
-    /**
-     * @param string $code
-     */
-    public function __construct($code)
-    {
-        $this->code = $code;
-    }
 
     /**
      * Set code
@@ -126,5 +127,15 @@ class IssuePriority
     public function __toString()
     {
         return (string) $this->label;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

@@ -5,10 +5,14 @@
 {% block navButtons %}
     {% if resource_granted('issue_view') %}
         <div class="btn-group">
-            {{ UI.addButton({
-                'path': path('issue_create'),
-                'entity_label': 'issue.issue'|trans
-            }) }}
+
         </div>
     {% endif %}
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+    entity_class:            entity_class,
+    importProcessor:         'oro_issue',
+    exportProcessor:         'oro_issue',
+    exportTemplateProcessor: 'oro_issue',
+    dataGridName:             'parents-issue-grid'
+    } %}
 {% endblock %}

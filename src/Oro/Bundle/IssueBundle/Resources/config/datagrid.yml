@@ -114,10 +114,16 @@ datagrid:
                     data_name: issue.updatedAt
         properties:
             id: ~
+            update_link:
+                type: url
+                route: issue_update
+                params:
+                    - id
             view_link:
-                type:       url
-                route:      issue_view
-                params:     [ id ]
+                type: url
+                route: issue_view
+                params:
+                    - id
         actions:
             view:
                 type:          navigate

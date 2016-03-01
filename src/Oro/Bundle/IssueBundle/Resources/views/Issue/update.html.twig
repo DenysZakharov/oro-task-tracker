@@ -1,0 +1,57 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% if form.vars.value.id %}
+    {% set formAction = path('issue_update', { 'id': form.vars.value.id }) %}
+{% else %}
+    {% set formAction = path('issue_create') %}
+{% endif %}
+
+{% block navButtons %}
+
+    {{ UI.cancelButton(path('issue_index')) }}
+    {% set html = UI.saveAndCloseButton() %}
+    {% if resource_granted('issue_update') %}
+        {% set html = html ~ UI.saveAndStayButton() %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({ 'html': html }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('issue_index'),
+        'indexLabel': 'Vehicles'|trans,
+        'entityTitle': form.vars.value.model
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'Vehicle'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'vehicle-edit' %}
+
+    {% set dataBlocks = [{
+    'title': 'General'|trans,
+    'class': 'active',
+    'subblocks': [{
+    'title': '',
+    'data': [
+    form_row(form.model),
+    form_row(form.seats),
+    form_row(form.boughtAt),
+    form_row(form.leasedUntil),
+    ]
+    }]
+    }]
+    %}
+    {% set data = {
+    'formErrors': form_errors(form)? form_errors(form) : null,
+    'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

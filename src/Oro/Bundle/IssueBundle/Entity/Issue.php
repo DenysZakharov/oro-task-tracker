@@ -14,7 +14,8 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\IssueBundle\Entity\Type;
+use Oro\Bundle\IssueBundle\Entity\IssuePriority;
+use Oro\Bundle\IssueBundle\Entity\IssueResolution;
 
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\IssueBundle\Entity\Repository\IssueRepository")
@@ -74,13 +75,13 @@ class Issue extends  ExtendIssue implements Taggable
     protected $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Priority")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IssueBundle\Entity\IssuePriority")
      * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
      **/
     protected $priority;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Resolution")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IssueBundle\Entity\IssueResolution")
      * @ORM\JoinColumn(name="resolution_id", referencedColumnName="id")
      **/
     protected $resolution;

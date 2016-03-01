@@ -1,0 +1,16 @@
+oro_menu_config:
+    items:
+        issue_list:
+            label: 'oro.issue.entity_plural.label'
+            route: 'issue_index'
+            extras:
+                position: 1
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        issue_list: ~
+        shortcuts:
+            children:
+                shortcut_new_issue: ~

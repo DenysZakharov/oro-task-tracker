@@ -17,10 +17,16 @@ class IssueResolution
     const RESOLUTION_DONE       = 'done';
 
     /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=50, nullable=false)
-     * @ORM\Id
+     * @ORM\Column(name="code", type="string", length=50)
      */
     protected $code;
 
@@ -38,13 +44,6 @@ class IssueResolution
      */
     protected $priority;
 
-    /**
-     * @param string $code
-     */
-    public function __construct($code)
-    {
-        $this->code = $code;
-    }
 
     /**
      * Set code
@@ -125,5 +124,15 @@ class IssueResolution
     public function __toString()
     {
         return (string) $this->label;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }
