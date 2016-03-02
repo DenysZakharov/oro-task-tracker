@@ -9,129 +9,123 @@ datagrid:
                     - issue.code
                     - issue.type
                     - issue.summary
-                    - issuePriority.label as priorityLabel
-                    - issuePriority.order as priorityOrder
-                    - issueResolution.label as resolutionLabel
-                    - issueAssignee.id assigneeId
-                    - issueReporter.id reporterId
-                    - issue.createdAt
-                    - issue.updatedAt
+                    - issuePriority.label as priority
+                    - issueResolution.label as resolution
+                    - issueReporter.firstName as issueReporterName
+                    - issueAssignee.firstName as issueAssigneeName
+                    - issue.created
+                    - issue.updated
                     - workflowStep.label as workflowStepLabel
                 from:
-                    - { table: IssueBundle:Issue, alias: issue }
+                    - { table: Oro\Bundle\IssueBundle\Entity\Issue, alias: issue }
 
                 join:
                     left:
                         - { join: issue.priority, alias: issuePriority }
                         - { join: issue.resolution, alias: issueResolution }
+                        - { join: issue.workflowStep, alias: workflowStep }
                         - { join: issue.reporter, alias: issueReporter }
                         - { join: issue.assignee, alias: issueAssignee }
         columns:
             code:
-                label:         oro.issue.code.label
-            type:
-                label:         oro.issue.type.label
+                label:         issue.code.label
             summary:
-                label:         oro.issue.summary.label
-            priorityLabel:
-                label:         oro.issue.priority.label
-            resolutionLabel:
-                label:         oro.issue.resolution.label
-            createdAt:
-                label:         oro.issue.created.label
-                frontend_type: datetime
-            updatedAt:
-                label:         oro.issue.updated.label
-                frontend_type: datetime
+                label:         issue.summary.label
+            type:
+                label:         issue.type.label
+            priority:
+                label:         issue.priority.label
             workflowStepLabel:
-                label:         oro.issue.workflow_step.label
+                label:         issue.status.label
+            resolution:
+                label:         issue.resolution.label
+            issueReporterName:
+                label:         issue.reporter.label
+            issueAssigneeName:
+                label:         issue.assignee.label
+            created:
+                label:         issue.created.label
+                frontend_type: datetime
+            updated:
+                label:         issue.updated.label
+                frontend_type: datetime
         sorters:
             columns:
                 code:
                     data_name: issue.code
-                type:
-                    data_name: issue.type
                 summary:
                     data_name: issue.summary
-                priorityLabel:
-                    data_name: issuePriority.order
-                resolutionLabel:
+                type:
+                    data_name: issue.type
+                priority:
+                    data_name: issue.priority
+                workflowStepLabel:
+                    data_name: workflowStep.stepOrder
+                resolution:
                     data_name: resolutionLabel
                 issueReporterName:
                     data_name: issueReporterName
                 issueAssigneeName:
                     data_name: issueAssigneeName
-                createdAt:
-                    data_name: issue.createdAt
-                updatedAt:
-                    data_name: issue.updatedAt
-                workflowStepLabel:
-                    data_name: workflowStep.stepOrder
+                created:
+                    data_name: issue.created
+                updated:
+                    data_name: issue.updated
             default:
-                updatedAt: DESC
+                updated: DESC
         filters:
             columns:
                 code:
                     type:      string
                     data_name: issue.code
-                type:
-                    type:      choice
-                    data_name: issue.type
-                    options:
-                        field_options:
-                            choices: @oro_issue.grid_helper->getTypeChoices
-                            translatable_options: false
                 summary:
                     type:      string
                     data_name: issue.summary
-                priority:
-                    label:     Priority
-                    type:      choice
-                    data_name: issuePriority.name
-                    options:
-                        field_options:
-                            choices: @oro_issue.grid_helper->getPriorityChoices()
-                resolution:
-                    label:     Resolution
-                    type:      choice
-                    data_name: issue.resolution
-                    options:
-                        field_options:
-                            choices: @oro_issue.grid_helper->getResolutionChoices()
-                reporter:
-                    label:     Reporter
-                    type:      string
-                    data_name: issueReporterName
-                assignee:
-                    label:     Assignee
-                    type:      string
-                    data_name: issueAssigneeName
-                createdAt:
-                    type:      datetime
-                    data_name: issue.createdAt
-                updatedAt:
-                    type:      datetime
-                    data_name: issue.updatedAt
         properties:
             id: ~
-            update_link:
-                type: url
-                route: issue_update
-                params:
-                    - id
             view_link:
-                type: url
-                route: issue_view
-                params:
-                    - id
+                type:       url
+                route:      issue_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      issue_update
+                params:     [ id ]
         actions:
             view:
                 type:          navigate
                 acl_resource:  issue_view
-                label:         oro.grid.action.view
+                label:         grid.action.view
                 icon:          eye-open
                 link:          view_link
                 rowAction:     true
+            update:
+                type:          navigate
+                acl_resource:  issue_update
+                label:         grid.action.update
+                icon:          edit
+                link:          update_link
         options:
             entity_pagination: true
 
+    parents-issue-grid:
+        extends: issue-grid
+        source:
+            query:
+                where:
+                    and:
+                        - issue.parent IS NULL
+
+    sub-issue-grid:
+        extends: issue-grid
+        source:
+            query:
+                where:
+                    and:
+                        - issue.parent = :parent_id
+            bind_parameters:
+                - parent_id
+        filters: ~
+        options:
+            toolbarOptions:
+                hide: true

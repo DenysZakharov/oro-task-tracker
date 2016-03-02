@@ -44,7 +44,7 @@ use Oro\Bundle\IssueBundle\Entity\IssueResolution;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Issue extends  ExtendIssue implements Taggable
+class Issue extends ExtendIssue implements Taggable
 {
     /**
      * @ORM\Column(type="integer")
@@ -69,8 +69,7 @@ class Issue extends  ExtendIssue implements Taggable
     protected $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\Column(type="string", length=255)
      */
     protected $type;
 
@@ -111,7 +110,7 @@ class Issue extends  ExtendIssue implements Taggable
     protected $assignee;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Issue", mappedBy="relatedIssues", cascade="PERSIST")
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\IssueBundle\Entity\Issue", inversedBy="relatedIssues")
      * @ORM\JoinTable(name="issue_related")
      **/
     protected $relatedIssues;
@@ -123,7 +122,7 @@ class Issue extends  ExtendIssue implements Taggable
     protected $collaborators;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IssueBundle\Entity\Issue", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     protected $parent;
@@ -392,11 +391,11 @@ class Issue extends  ExtendIssue implements Taggable
     /**
      * Set type
      *
-     * @param \Oro\Bundle\OrganizationBundle\Entity\Organization $type
+     * @param string $type
      *
-     * @return Issue
+     * @return $this
      */
-    public function setType(\Oro\Bundle\OrganizationBundle\Entity\Organization $type = null)
+    public function setType($type)
     {
         $this->type = $type;
 
@@ -406,7 +405,7 @@ class Issue extends  ExtendIssue implements Taggable
     /**
      * Get type
      *
-     * @return \Oro\Bundle\OrganizationBundle\Entity\Organization
+     * @return string
      */
     public function getType()
     {
@@ -416,11 +415,11 @@ class Issue extends  ExtendIssue implements Taggable
     /**
      * Set priority
      *
-     * @param \Oro\Bundle\IssueBundle\Entity\Priority $priority
+     * @param \Oro\Bundle\IssueBundle\Entity\IssuePriority $priority
      *
      * @return Issue
      */
-    public function setPriority(\Oro\Bundle\IssueBundle\Entity\Priority $priority = null)
+    public function setPriority(\Oro\Bundle\IssueBundle\Entity\IssuePriority $priority = null)
     {
         $this->priority = $priority;
 
@@ -430,7 +429,7 @@ class Issue extends  ExtendIssue implements Taggable
     /**
      * Get priority
      *
-     * @return \Oro\Bundle\IssueBundle\Entity\Priority
+     * @return \Oro\Bundle\IssueBundle\Entity\IssuePriority
      */
     public function getPriority()
     {
@@ -440,11 +439,11 @@ class Issue extends  ExtendIssue implements Taggable
     /**
      * Set resolution
      *
-     * @param \Oro\Bundle\IssueBundle\Entity\Resolution $resolution
+     * @param \Oro\Bundle\IssueBundle\Entity\IssueResolution $resolution
      *
      * @return Issue
      */
-    public function setResolution(\Oro\Bundle\IssueBundle\Entity\Resolution $resolution = null)
+    public function setResolution(\Oro\Bundle\IssueBundle\Entity\IssueResolution $resolution = null)
     {
         $this->resolution = $resolution;
 
@@ -454,7 +453,7 @@ class Issue extends  ExtendIssue implements Taggable
     /**
      * Get resolution
      *
-     * @return \Oro\Bundle\IssueBundle\Entity\Resolution
+     * @return \Oro\Bundle\IssueBundle\Entity\IssueResolution
      */
     public function getResolution()
     {
@@ -681,5 +680,13 @@ class Issue extends  ExtendIssue implements Taggable
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string)$this->getSummary();
     }
 }

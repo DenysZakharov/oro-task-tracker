@@ -20,10 +20,10 @@
 {% block pageHeader %}
     {% if form.vars.value.id %}
         {% set breadcrumbs = {
-        'entity':      form.vars.value,
+        'entity':      entity,
         'indexPath':   path('issue_index'),
         'indexLabel': 'Vehicles'|trans,
-        'entityTitle': form.vars.value.model
+        'entityTitle': entity.summary
         } %}
         {{ parent() }}
     {% else %}
@@ -41,10 +41,15 @@
     'subblocks': [{
     'title': '',
     'data': [
-    form_row(form.model),
-    form_row(form.seats),
-    form_row(form.boughtAt),
-    form_row(form.leasedUntil),
+    form_row(form.code),
+    form_row(form.summary),
+    form.type is defined ? form_row(form.type) : '',
+    form_row(form.description),
+    form_row(form.priority),
+    form_row(form.assignee),
+    form_row(form.relatedIssues),
+    form.owner is defined ? form_row(form.owner) : '',
+    form_row(form.tags)
     ]
     }]
     }]

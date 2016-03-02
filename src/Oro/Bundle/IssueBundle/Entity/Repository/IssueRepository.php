@@ -1,8 +1,10 @@
 <?php
 
-namespace Oro\Bundle\IssueBundle\Entity;
+namespace Oro\Bundle\IssueBundle\Entity\Repository;
 
-class IssueRepository
+use Doctrine\ORM\EntityRepository;
+
+class IssueRepository extends EntityRepository
 {
 
 }

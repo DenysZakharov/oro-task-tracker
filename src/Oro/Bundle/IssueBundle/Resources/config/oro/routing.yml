@@ -3,7 +3,7 @@ issue_bundle:
     type: annotation
     prefix: /issue
 
-oro_issue_bundle_api:
+issue_bundle_api:
     resource:     "@OroIssueBundle/Controller/Api/Rest/IssueController.php"
     type:         rest
     prefix:       api/rest/{version}/

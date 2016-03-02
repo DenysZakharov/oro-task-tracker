@@ -1,16 +1,24 @@
 oro_menu_config:
     items:
-        issue_list:
+        issue_tab:
+            label: Issue label
+            uri: '#'
+            extras:
+                position: 300
+        issue_tab_link:
             label: 'oro.issue.entity_plural.label'
             route: 'issue_index'
+        shortcut_new_issue:
+            label: 'oro.menu.shortcut_new_issue.label'
+            route: 'issue_create'
             extras:
-                position: 1
+                isCustomAction: true
     tree:
         application_menu:
             children:
-                system_tab:
+                issue_tab:
                     children:
-                        issue_list: ~
+                        issue_tab_link: ~
         shortcuts:
             children:
                 shortcut_new_issue: ~

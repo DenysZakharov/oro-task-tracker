@@ -3,16 +3,10 @@
 {% set pageTitle = 'issue.issue'|trans %}
 
 {% block navButtons %}
-    {% if resource_granted('issue_view') %}
-        <div class="btn-group">
-
-        </div>
+    {% if resource_granted('issue_create') %}
+        {{ UI.addButton({
+            'path' : path('issue_create'),
+            'entity_label': 'oro.issue.entity.label'|trans
+        }) }}
     {% endif %}
-    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
-    entity_class:            entity_class,
-    importProcessor:         'oro_issue',
-    exportProcessor:         'oro_issue',
-    exportTemplateProcessor: 'oro_issue',
-    dataGridName:             'parents-issue-grid'
-    } %}
 {% endblock %}

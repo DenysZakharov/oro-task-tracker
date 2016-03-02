@@ -28,7 +28,7 @@ class IssueType extends AbstractType
                 'text',
                 [
                     'required' => true,
-                    'label' => 'oro.issue.code.label'
+                    'label' => 'issue.code'
                 ]
             )
             ->add(
@@ -36,24 +36,24 @@ class IssueType extends AbstractType
                 'text',
                 [
                     'required' => true,
-                    'label' => 'oro.issue.summary.label'
+                    'label' => 'issue.summary'
                 ]
             )
             ->add(
                 'type',
                 'choice',
-                array(
+                [
                     'choices' => self::getIssueTypes(),
-                    'label' => 'oro.issue.type.label',
+                    'label' => 'issue.type',
                     'required' => true
-                )
+                ]
             )
             ->add(
                 'description',
                 'textarea',
                 [
                     'required' => false,
-                    'label' => 'oro.issue.description.label'
+                    'label' => 'issue.description'
                 ]
             )
             ->add(
@@ -63,26 +63,22 @@ class IssueType extends AbstractType
                     'label' => 'oro.issue.priority.label',
                     'class' => 'Oro\Bundle\IssueBundle\Entity\IssuePriority',
                     'required' => true,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('p')
-                            ->addOrderBy('p.order', 'DESC');
-                    }
                 ]
             )
             ->add(
                 'assignee',
                 'translatable_entity',
                 [
-                    'label' => 'oro.issue.assignee.label',
+                    'label' => 'issue.assignee',
                     'class' => 'Oro\Bundle\UserBundle\Entity\User',
                     'required' => true
                 ]
             )
             ->add(
-                'related',
+                'relatedIssues',
                 'translatable_entity',
                 [
-                    'label' => 'oro.issue.related.label',
+                    'label' => 'issue.related',
                     'class' => 'Oro\Bundle\IssueBundle\Entity\Issue',
                     'multiple' => true,
                     'required' => false
@@ -91,7 +87,7 @@ class IssueType extends AbstractType
                 'tags',
                 'oro_tag_select',
                 [
-                    'label' => 'oro.tag.entity_plural_label'
+                    'label' => 'issue.tag'
                 ]
             );
     }

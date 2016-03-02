@@ -17,17 +17,17 @@ class IssueController extends Controller
 {
     /**
      * @Route("/", name="issue_index")
-     * @Template
+     * @Template()
      * @Acl(
-     *     id="issue_view",
-     *     type="entity",
-     *     class="IssueBundle:Issue",
-     *     permission="VIEW"
+     *      id="issue_view",
+     *      type="entity",
+     *      class="OroIssueBundle:Issue",
+     *      permission="VIEW"
      * )
      */
     public function indexAction()
     {
-        return array('entity_class' => 'Oro\Bundle\IssueBundle\Entity\Issue');
+        return array('gridName' => 'issue-grid');
     }
 
     /**
@@ -43,7 +43,13 @@ class IssueController extends Controller
      */
     public function createAction(Request $request)
     {
-        return $this->update(new Issue(), $request);
+        $result =  $this->update(new Issue(), $request);
+
+        if ($request->query->get('_wid')) {
+            $result['formAction'] = $this->generateUrl('issue_create');
+        }
+
+        return $result;
     }
 
     /**
@@ -65,8 +71,8 @@ class IssueController extends Controller
 
     private function update(Issue $issue, Request $request)
     {
-        $form = $this->get('form.factory')->create('issue_form', $issue);
-        $form->handleRequest($request);
+        /*$form = $this->get('form.factory')->create('issue_form', $issue);
+        $handler = $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -78,7 +84,9 @@ class IssueController extends Controller
                     'route' => 'issue_update',
                     'parameters' => array('id' => $issue->getId()),
                 ),
-                array('route' => 'issue_view'),
+                array('route' => 'issue_view',
+                    'parameters' => array('id' => $issue->getId())
+                ),
                 $issue
             );
         }
@@ -86,6 +94,27 @@ class IssueController extends Controller
         return array(
             'entity' => $issue,
             'form' => $form->createView(),
+        );
+        */
+        $saved = false;
+        //$form = $this->createForm($this->getFormType(), $issue);
+        $form = $this->get('form.factory')->create('issue_form', $issue);
+        if ($this->get('issue.form.handler.issue')->process($issue)) {
+
+            $saved = true;
+            if (!$request->query->get('_widgetContainer')) {
+                return $this->get('oro_ui.router')->redirectAfterSave(
+                    ['route' => 'issue_update', 'parameters' => ['id' => $issue->getId()]],
+                    ['route' => 'issue_view', 'parameters' => ['id' => $issue->getId()]],
+                    $issue
+                );
+            }
+        }
+
+        return array(
+            'saved'  => $saved,
+            'entity' => $issue,
+            'form'   => $form->createView()
         );
     }
 
