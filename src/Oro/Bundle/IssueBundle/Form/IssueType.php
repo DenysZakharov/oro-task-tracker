@@ -60,7 +60,7 @@ class IssueType extends AbstractType
                 'priority',
                 'translatable_entity',
                 [
-                    'label' => 'oro.issue.priority.label',
+                    'label' => 'issue.priority',
                     'class' => 'Oro\Bundle\IssueBundle\Entity\IssuePriority',
                     'required' => true,
                 ]

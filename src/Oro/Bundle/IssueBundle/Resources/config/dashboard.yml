@@ -1,0 +1,6 @@
+oro_dashboard_config:
+    widgets:
+        issue_short_grid:
+            label: widget.issue_short_grid
+            acl:   issue_view
+            route: issue_index

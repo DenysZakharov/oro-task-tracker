@@ -1,0 +1,114 @@
+workflows:
+    issue_flow:
+        label: 'Issue'
+        entity: Oro\Bundle\IssueBundle\Entity\Issue
+        entity_attribute: issue
+        start_step: open
+
+        steps:
+            open:
+                label: 'Open'
+                order: 10
+                allowed_transitions:
+                    - start_progress
+                    - resolve
+                    - close
+            reopen:
+                label: 'Reopen'
+                order: 10
+                allowed_transitions:
+                    - start_progress
+                    - resolve
+                    - close
+            in_progress:
+                label: 'In progress'
+                order: 20
+                allowed_transitions:
+                    - stop_progress
+                    - resolve
+                    - close
+            resolved:
+                label: 'Resolved'
+                order: 30
+                allowed_transitions:
+                    - close
+                    - reopen
+            closed:
+                label: 'Closed'
+                order: 40
+                allowed_transitions:
+                    - reopen
+
+        attributes:
+            issue_resolution:
+                label: 'Resolution'
+                type: entity
+                options:
+                    class: Oro\Bundle\IssueBundle\Entity\IssueResolution
+
+        transitions:
+            start_progress:
+                label: 'Start progress'
+                step_to: in_progress
+                frontend_options:
+                    icon: 'icon-play'
+                transition_definition: start_progress_definition
+            stop_progress:
+                label: 'Stop progress'
+                step_to: open
+                frontend_options:
+                    icon: 'icon-stop'
+                transition_definition: stop_progress_definition
+            resolve:
+                label: 'Resolve'
+                step_to: resolved
+                frontend_options:
+                    icon: 'icon-stop'
+                transition_definition: resolve_definition
+                form_options:
+                    attribute_fields:
+                        issue_resolution:
+                            form_type: entity
+                            options:
+                                class: Oro\Bundle\IssueBundle\Entity\IssueResolution
+                                property: label
+                                required: true
+            close:
+                label: 'Close'
+                step_to: closed
+                frontend_options:
+                    icon: 'icon-ok'
+                transition_definition: closed_definition
+                form_options:
+                    attribute_fields:
+                        issue_resolution:
+                            form_type: entity
+                            options:
+                                class: Oro\Bundle\IssueBundle\Entity\IssueResolution
+                                property: label
+                                required: true
+            reopen:
+                label: 'Reopen'
+                step_to: reopen
+                frontend_options:
+                    icon: 'icon-edit'
+                transition_definition: reopen_definition
+
+        transition_definitions:
+            start_progress_definition: ~
+            stop_progress_definition: ~
+            resolve_definition:
+                post_actions:
+                    - @call_method:
+                        object: $issue
+                        method: setResolution
+                        method_parameters:
+                            [$issue_resolution]
+            closed_definition:
+                post_actions:
+                    - @call_method:
+                        object: $issue
+                        method: setResolution
+                        method_parameters:
+                            [$issue_resolution]
+            reopen_definition: ~

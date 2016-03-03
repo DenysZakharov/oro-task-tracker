@@ -1,5 +1,8 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroTagBundle::macros.html.twig' as tag %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 
 {% block navButtons %}
     {% if resource_granted('EDIT', entity) %}
@@ -8,7 +11,6 @@
             'entity_label': 'Issue'|trans
         }) }}
     {% endif %}
-
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -26,19 +28,25 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('oro.issue.summary.label'|trans, entity.summary) }}
-                    {{ UI.renderProperty('oro.issue.code.label'|trans, entity.code) }}
-                    {{ UI.renderHtmlProperty('oro.issue.description.label'|trans, entity.description|nl2br) }}
-                    {{ UI.renderProperty('oro.issue.organization.label'|trans, entity.organization) }}
-                    {{ UI.renderProperty('oro.issue.type.label'|trans, entity.type) }}
-                    {{ UI.renderProperty('oro.issue.resolution.label'|trans, entity.resolution) }}
-                    {{ UI.renderProperty('oro.issue.assignee.label'|trans, entity.assignee) }}
-                    {{ UI.renderProperty('oro.issue.reporter.label'|trans, entity.reporter) }}
-                    {{ UI.renderProperty('oro.issue.created.label'|trans, entity.created|oro_format_datetime) }}
-                    {{ UI.renderProperty('oro.issue.updated.label'|trans, entity.updated|oro_format_datetime) }}
-                    {{ UI.renderProperty('oro.issue.priority.label'|trans, entity.priority) }}
+                    {{ UI.renderProperty('issue.summary'|trans, entity.summary) }}
+                    {{ UI.renderProperty('issue.code'|trans, entity.code) }}
+                    {{ UI.renderHtmlProperty('issue.description'|trans, entity.description|nl2br) }}
+                    {{ UI.renderProperty('issue.organization'|trans, entity.organization) }}
+                    {{ UI.renderProperty('issue.type'|trans, entity.type) }}
+                    {{ UI.renderProperty('issue.resolution'|trans, entity.resolution) }}
+                    {{ UI.renderProperty('issue.assignee'|trans, entity.assignee) }}
+                    {{ UI.renderProperty('issue.reporter'|trans, entity.reporter) }}
+                    {{ UI.renderProperty('issue.created'|trans, entity.created|oro_format_datetime) }}
+                    {{ UI.renderProperty('issue.updated'|trans, entity.updated|oro_format_datetime) }}
+                    {{ UI.renderProperty('issue.priority'|trans, entity.priority) }}
                 </div>
             </div>
+        </div>
+        <div class="responsive-block">
+            {{ entityConfig.renderDynamicFields(entity) }}
+            {% if resource_granted('oro_tag_view_tag_cloud') %}
+                {{ UI.renderHtmlProperty('oro.tag'|trans, tag.renderView(entity)) }}
+            {% endif %}
         </div>
     {% endset %}
     {% set dataBlocks = [
@@ -51,7 +59,7 @@
     }
     ] %}
 
-    {% set id = 'vehicleView' %}
+    {% set id = 'issueView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

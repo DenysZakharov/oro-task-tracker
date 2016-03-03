@@ -54,6 +54,18 @@ class IssueController extends RestController
      *     nullable=true,
      *     description="Date in RFC 3339 format. For example: 2009-11-05T13:15:30Z, 2008-07-01T22:35:17+08:00"
      * )
+     * @QueryParam(
+     *     name="ownerId",
+     *     requirements="\d+",
+     *     nullable=true,
+     *     description="Id of owner assignee"
+     * )
+     * @QueryParam(
+     *     name="ownerUsername",
+     *     requirements=".+",
+     *     nullable=true,
+     *     description="Username of owner assignee"
+     * )
      * @ApiDoc(
      *      description="Get all issue items",
      *      resource=true
@@ -158,7 +170,7 @@ class IssueController extends RestController
      */
     public function getManager()
     {
-        return $this->get('issue.manager.api');
+        return $this->get('oro_issue.manager.api');
     }
 
     /**

@@ -71,7 +71,7 @@ class IssueController extends Controller
 
     private function update(Issue $issue, Request $request)
     {
-        /*$form = $this->get('form.factory')->create('issue_form', $issue);
+        $form = $this->get('form.factory')->create('issue_form', $issue);
         $handler = $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -95,7 +95,7 @@ class IssueController extends Controller
             'entity' => $issue,
             'form' => $form->createView(),
         );
-        */
+        /*
         $saved = false;
         //$form = $this->createForm($this->getFormType(), $issue);
         $form = $this->get('form.factory')->create('issue_form', $issue);
@@ -116,6 +116,7 @@ class IssueController extends Controller
             'entity' => $issue,
             'form'   => $form->createView()
         );
+        */
     }
 
     /**
