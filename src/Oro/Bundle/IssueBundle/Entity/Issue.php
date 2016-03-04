@@ -38,6 +38,9 @@ use Oro\Bundle\IssueBundle\Entity\IssueResolution;
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"
  *          },
+ *          "tag"={
+ *              "enabled"=true
+ *          }
  *      }
  * )
  * @SuppressWarnings(PHPMD.TooManyFields)

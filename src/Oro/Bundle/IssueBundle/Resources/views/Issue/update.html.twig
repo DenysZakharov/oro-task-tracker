@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
 {% if form.vars.value.id %}
     {% set formAction = path('issue_update', { 'id': form.vars.value.id }) %}
@@ -33,7 +33,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'vehicle-edit' %}
+    {% set id = 'issue-form' %}
 
     {% set dataBlocks = [{
     'title': 'General'|trans,
@@ -54,6 +54,20 @@
     }]
     }]
     %}
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+        'title': 'Additional'|trans,
+        'subblocks': [{
+        'title': '',
+        'useSpan': false,
+        'data' : additionalData
+        }]
+        }] ) %}
+    {% endif %}
     {% set data = {
     'formErrors': form_errors(form)? form_errors(form) : null,
     'dataBlocks': dataBlocks,

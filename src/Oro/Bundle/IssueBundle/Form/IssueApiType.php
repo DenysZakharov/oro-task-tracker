@@ -16,9 +16,6 @@ class IssueApiType extends IssueType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Oro\Bundle\IssueBundle\Entity\Issue',
-                'intention' => 'issue',
-                'cascade_validation' => true,
                 'csrf_protection' => false
             ]
         );

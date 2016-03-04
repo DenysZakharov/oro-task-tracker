@@ -11,6 +11,22 @@
             'entity_label': 'Issue'|trans
         }) }}
     {% endif %}
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('tracker_api_delete_issue', {'id': entity.id}),
+            'dataRedirect': path('issue_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-user',
+            'dataId': entity.id,
+            'entity_label': 'issue.entity.label'|trans
+        }) }}
+    {% endif %}
+    {% if entity.type == 'story' and resource_granted('issue_create') %}
+        {{ UI.addButton({
+            'path' : path('subissue_create', {'parentIssue' : entity.code}),
+            'entity_label': 'issue.subentity'|trans
+        }) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}

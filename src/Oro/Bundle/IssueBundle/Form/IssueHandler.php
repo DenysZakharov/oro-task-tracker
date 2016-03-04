@@ -33,44 +33,101 @@ class IssueHandler implements TagHandlerInterface
     protected $manager;
 
     /**
+     * @var ActivityManager
+     */
+    protected $activityManager;
+
+    /**
+     * @var EntityRoutingHelper
+     */
+    protected $entityRoutingHelper;
+
+    /**
      * @var TagManager
      */
     protected $tagManager;
 
     /**
-     *
      * @param FormInterface $form
-     * @param Request       $request
+     * @param Request $request
      * @param ObjectManager $manager
+     * @param ActivityManager $activityManager
+     * @param EntityRoutingHelper $entityRoutingHelper
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        ObjectManager $manager,
+        ActivityManager $activityManager,
+        EntityRoutingHelper $entityRoutingHelper
+    )
     {
-        $this->form    = $form;
+        $this->form = $form;
         $this->request = $request;
         $this->manager = $manager;
+        $this->activityManager = $activityManager;
+        $this->entityRoutingHelper = $entityRoutingHelper;
     }
 
     /**
      * Process form
      *
-     * @param  Issue $entity
-     * @return bool True on successful processing, false otherwise
+     * @param Issue $entity
+     * @param string $parentIssueCode
+     * @param \Oro\Bundle\UserBundle\Entity\User $currentUser
+     * @return bool  True on successful processing, false otherwise
      */
-    public function process(Issue $entity)
+    public function process(Issue $entity, $parentIssueCode, $currentUser)
     {
+        $action = $this->entityRoutingHelper->getAction($this->request);
+        $targetEntityClass = $this->entityRoutingHelper->getEntityClassName($this->request);
+        $targetEntityId = $this->entityRoutingHelper->getEntityId($this->request);
+
+        if ($targetEntityClass
+            && !$entity->getId()
+            && $this->request->getMethod() === 'GET'
+            && $action === 'assign'
+            && is_a($targetEntityClass, 'Oro\Bundle\UserBundle\Entity\User', true)
+        ) {
+            $entity->setOwner(
+                $this->entityRoutingHelper->getEntity($targetEntityClass, $targetEntityId)
+            );
+            FormUtils::replaceField($this->form, 'owner', ['read_only' => true]);
+        }
+
+        if ($parentIssueCode) {
+            $this->form->remove('type');
+            $entity->setType(IssueType::TASK);
+        }
+
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
-                $this->onSuccess($entity);
 
+                if ($parentIssueCode) {
+                    $parent = $this->manager->getRepository('OroIssueBundle:Issue')->findOneByCode($parentIssueCode);
+                    $entity->setParent($parent);
+                }
+
+                $this->onSuccess($entity);
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Get form, that build into handler, via handler service
+     *
+     * @return FormInterface
+     */
+    public function getForm()
+    {
+        return $this->form;
     }
 
     /**
@@ -82,7 +139,9 @@ class IssueHandler implements TagHandlerInterface
     {
         $this->manager->persist($entity);
         $this->manager->flush();
-        $this->tagManager->saveTagging($entity);
+        if ($this->tagManager) {
+            $this->tagManager->saveTagging($entity);
+        }
     }
 
     /**

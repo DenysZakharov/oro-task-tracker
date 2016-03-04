@@ -43,13 +43,13 @@ class IssueController extends RestController
      *      description="Number of items per page. defaults to 10."
      * )
      * @QueryParam(
-     *     name="createdAt",
+     *     name="created",
      *     requirements="\d{4}(-\d{2}(-\d{2}([T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|([-+]\d{2}(:?\d{2})?))?)?)?)?",
      *     nullable=true,
      *     description="Date in RFC 3339 format. For example: 2009-11-05T13:15:30Z, 2008-07-01T22:35:17+08:00"
      * )
      * @QueryParam(
-     *     name="updatedAt",
+     *     name="updated",
      *     requirements="\d{4}(-\d{2}(-\d{2}([T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|([-+]\d{2}(:?\d{2})?))?)?)?)?",
      *     nullable=true,
      *     description="Date in RFC 3339 format. For example: 2009-11-05T13:15:30Z, 2008-07-01T22:35:17+08:00"
@@ -80,8 +80,8 @@ class IssueController extends RestController
 
         $dateParamFilter  = new HttpDateTimeParameterFilter();
         $filterParameters = [
-            'createdAt'     => $dateParamFilter,
-            'updatedAt'     => $dateParamFilter,
+            'created'     => $dateParamFilter,
+            'updated'     => $dateParamFilter,
             'ownerId'       => new IdentifierToReferenceFilter($this->getDoctrine(), 'OroUserBundle:User'),
             'ownerUsername' => new IdentifierToReferenceFilter($this->getDoctrine(), 'OroUserBundle:User', 'username'),
         ];
@@ -170,7 +170,7 @@ class IssueController extends RestController
      */
     public function getManager()
     {
-        return $this->get('oro_issue.manager.api');
+        return $this->get('issue.manager.api');
     }
 
     /**
