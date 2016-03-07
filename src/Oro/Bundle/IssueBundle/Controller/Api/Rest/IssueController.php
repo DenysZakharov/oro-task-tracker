@@ -42,30 +42,6 @@ class IssueController extends RestController
      *      nullable=true,
      *      description="Number of items per page. defaults to 10."
      * )
-     * @QueryParam(
-     *     name="created",
-     *     requirements="\d{4}(-\d{2}(-\d{2}([T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|([-+]\d{2}(:?\d{2})?))?)?)?)?",
-     *     nullable=true,
-     *     description="Date in RFC 3339 format. For example: 2009-11-05T13:15:30Z, 2008-07-01T22:35:17+08:00"
-     * )
-     * @QueryParam(
-     *     name="updated",
-     *     requirements="\d{4}(-\d{2}(-\d{2}([T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|([-+]\d{2}(:?\d{2})?))?)?)?)?",
-     *     nullable=true,
-     *     description="Date in RFC 3339 format. For example: 2009-11-05T13:15:30Z, 2008-07-01T22:35:17+08:00"
-     * )
-     * @QueryParam(
-     *     name="ownerId",
-     *     requirements="\d+",
-     *     nullable=true,
-     *     description="Id of owner assignee"
-     * )
-     * @QueryParam(
-     *     name="ownerUsername",
-     *     requirements=".+",
-     *     nullable=true,
-     *     description="Username of owner assignee"
-     * )
      * @ApiDoc(
      *      description="Get all issue items",
      *      resource=true
@@ -77,18 +53,7 @@ class IssueController extends RestController
     {
         $page  = (int)$this->getRequest()->get('page', 1);
         $limit = (int)$this->getRequest()->get('limit', self::ITEMS_PER_PAGE);
-
-        $dateParamFilter  = new HttpDateTimeParameterFilter();
-        $filterParameters = [
-            'created'     => $dateParamFilter,
-            'updated'     => $dateParamFilter,
-            'ownerId'       => new IdentifierToReferenceFilter($this->getDoctrine(), 'OroUserBundle:User'),
-            'ownerUsername' => new IdentifierToReferenceFilter($this->getDoctrine(), 'OroUserBundle:User', 'username'),
-        ];
-        $map              = array_fill_keys(['ownerId', 'ownerUsername'], 'owner');
-
-        $criteria = $this->getFilterCriteria($this->getSupportedQueryParameters('cgetAction'), $filterParameters, $map);
-
+        $criteria = $this->getFilterCriteria($this->getSupportedQueryParameters(__FUNCTION__));
         return $this->handleGetListRequest($page, $limit, $criteria);
     }
 

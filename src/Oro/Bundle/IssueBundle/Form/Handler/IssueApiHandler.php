@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\IssueBundle\Form;
+namespace Oro\Bundle\IssueBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 

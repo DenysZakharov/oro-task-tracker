@@ -1,6 +1,14 @@
+parameters:
+    issue.form.type.issue.class:        Oro\Bundle\IssueBundle\Form\Type\IssueType
+    issue.form.api_type.issue.class:    Oro\Bundle\IssueBundle\Form\Type\IssueApiType
+    issue.form.handler.issue.class:     Oro\Bundle\IssueBundle\Form\Handler\IssueHandler
+    issue.manager.api.class:            Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    issue.form.handler.issue_api.class: Oro\Bundle\IssueBundle\Form\Handler\IssueApiHandler
+    issue.entity:                       Oro\Bundle\IssueBundle\Entity\Issue
+
 services:
     issue.form.type.issue:
-        class: Oro\Bundle\IssueBundle\Form\IssueType
+        class: %issue.form.type.issue.class%
         tags:
             - { name: form.type, alias: issue_form }
 
@@ -8,12 +16,10 @@ services:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
         factory_service: form.factory
-        arguments:
-            - 'issue_form'
-            - 'issue_form'
+        arguments: ['issue_form', null]
 
     issue.form.handler.issue:
-        class: Oro\Bundle\IssueBundle\Form\IssueHandler
+        class: %issue.form.handler.issue.class%
         scope: request
         arguments:
             - @tracker_issue.form
@@ -25,7 +31,7 @@ services:
             - { name: oro_tag.tag_manager }
 
     issue.form.type.issue_api:
-        class: Oro\Bundle\IssueBundle\Form\IssueApiType
+        class: %issue.form.api_type.issue.class%
         tags:
             - { name: form.type, alias: issue_api }
 
@@ -33,13 +39,10 @@ services:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
         factory_service: form.factory
-        arguments:
-            - 'issue_api'
-            - 'issue_api'
-            - null
+        arguments: ['issue_api', 'issue_api']
 
     issue.form.handler.issue.api:
-        class: Oro\Bundle\IssueBundle\Form\IssueApiHandler
+        class: %issue.form.handler.issue_api.class%
         scope: request
         arguments:
             - @issue.form.api
@@ -50,8 +53,8 @@ services:
             - { name: oro_tag.tag_manager }
 
     issue.manager.api:
-        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        class: %issue.manager.api.class%
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
-            - Oro\Bundle\IssueBundle\Entity\Issue
+            - %issue.entity%
             - @doctrine.orm.entity_manager

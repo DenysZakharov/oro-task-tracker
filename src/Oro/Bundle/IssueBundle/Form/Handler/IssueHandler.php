@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\IssueBundle\Form;
+namespace Oro\Bundle\IssueBundle\Form\Handler;
 
 use Oro\Bundle\IssueBundle\Form\IssueType;
 use Symfony\Component\Form\FormInterface;
@@ -73,11 +73,10 @@ class IssueHandler implements TagHandlerInterface
      * Process form
      *
      * @param Issue $entity
-     * @param string $parentIssueCode
      * @param \Oro\Bundle\UserBundle\Entity\User $currentUser
      * @return bool  True on successful processing, false otherwise
      */
-    public function process(Issue $entity, $parentIssueCode, $currentUser)
+    public function process(Issue $entity, $currentUser)
     {
         $action = $this->entityRoutingHelper->getAction($this->request);
         $targetEntityClass = $this->entityRoutingHelper->getEntityClassName($this->request);
@@ -94,12 +93,12 @@ class IssueHandler implements TagHandlerInterface
             );
             FormUtils::replaceField($this->form, 'owner', ['read_only' => true]);
         }
-
+        /*
         if ($parentIssueCode) {
             $this->form->remove('type');
             $entity->setType(IssueType::TASK);
         }
-
+        */
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {

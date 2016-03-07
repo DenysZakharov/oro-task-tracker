@@ -1,0 +1,10 @@
+placeholders:
+    view_navButtons_before:
+        items:
+            oro_issue_create_issue_on_user_page: ~
+
+items:
+    oro_issue_create_issue_on_user_page:
+        template: OroIssueBundle:User:create_issue_button.html.twig
+        applicable: @oro_ui.placeholder.filter->isInstanceOf($entity$, %oro_user.entity.class%)
+        acl: oro_issue_view

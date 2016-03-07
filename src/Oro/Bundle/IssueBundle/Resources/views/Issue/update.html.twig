@@ -27,13 +27,13 @@
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'ui.create_entity'|trans({'%entityName%': 'Issue'|trans}) %}
+        {% set title = 'issue.create_entity'|trans({'%entityName%': 'Issue'|trans}) %}
         {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
     {% endif %}
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'issue-form' %}
+    {% set id = 'issue_form' %}
 
     {% set dataBlocks = [{
     'title': 'General'|trans,

@@ -55,15 +55,28 @@
                     {{ UI.renderProperty('issue.created'|trans, entity.created|oro_format_datetime) }}
                     {{ UI.renderProperty('issue.updated'|trans, entity.updated|oro_format_datetime) }}
                     {{ UI.renderProperty('issue.priority'|trans, entity.priority) }}
+                    {%- if entity.owner -%}
+                            {% if resource_granted('oro_user_user_view') %}
+                                <a href="{{ path('oro_user_view', {'id': entity.owner.id}) }}">
+                                    {{ UI.renderHtmlProperty('issue.owner'|trans, entity.owner|oro_format_name|escape) }}
+                                </a>
+                            {% else %}
+                                    {{ UI.renderHtmlProperty('issue.owner'|trans, entity.owner|oro_format_name|escape) }}
+                            {% endif %}
+                        {%- endif -%}
+
+                    {% if entity.parent is not empty %}
+                        {% set parentLabel = 'issue.story'|trans ~ ': ' ~ entity.parent.summary %}
+                        {{ UI.button({
+                            'path':  path('issue_view', {'id': entity.parent.id}),
+                            'label': parentLabel,
+                            'title': parentLabel,
+                        }) }}
+                    {% endif %}
                 </div>
             </div>
         </div>
-        <div class="responsive-block">
-            {{ entityConfig.renderDynamicFields(entity) }}
-            {% if resource_granted('oro_tag_view_tag_cloud') %}
-                {{ UI.renderHtmlProperty('oro.tag'|trans, tag.renderView(entity)) }}
-            {% endif %}
-        </div>
+
     {% endset %}
     {% set dataBlocks = [
     {
@@ -75,7 +88,21 @@
     }
     ] %}
 
+    {% if entity.type == 'story' %}
+        {% set dataBlocks = dataBlocks|merge([{
+        'title': 'issue.subissue'|trans,
+        'subblocks': [{
+        'title': '',
+        'useSpan': false,
+        'data' : [
+        dataGrid.renderGrid('sub-issue-grid', {'parent_id': entity.id})
+        ]
+        }]
+        }] ) %}
+    {% endif %}
+
     {% set id = 'issueView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
+
     {{ parent() }}
 {% endblock content_data %}

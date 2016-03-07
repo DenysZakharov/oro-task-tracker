@@ -1,12 +1,11 @@
 <?php
 
-namespace Oro\Bundle\IssueBundle\Form;
+namespace Oro\Bundle\IssueBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Doctrine\ORM\EntityRepository;
 
 class IssueType extends AbstractType
 {
@@ -94,9 +93,9 @@ class IssueType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Oro\Bundle\IssueBundle\Entity\Issue',
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'Oro\Bundle\IssueBundle\Entity\Issue'
+        ]);
     }
 
     public function getName()

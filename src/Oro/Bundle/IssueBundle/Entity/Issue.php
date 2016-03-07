@@ -24,12 +24,20 @@ use Oro\Bundle\IssueBundle\Entity\IssueResolution;
  *      name="tracker_issue",
  * )
  * @Config(
+ *      routeName="oro_issue_index",
+ *      routeView="oro_issue_view",
  *      defaultValues={
  *           "workflow"={
  *              "active_workflow"="issue_flow"
  *          },
+ *          "grouping"={
+ *              "groups"={"activity"}
+ *          },
  *          "security"={
  *              "type"="ACL"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          },
  *          "ownership"={
  *              "owner_type"="USER",
@@ -62,7 +70,7 @@ class Issue extends ExtendIssue implements Taggable
     protected $summary;
 
     /**
-     * @ORM\Column(name="`code`", type="string", length=50, unique=true)
+     * @ORM\Column(name="code", type="string", length=255, unique=true)
      */
     protected $code;
 

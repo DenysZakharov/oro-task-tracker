@@ -1,0 +1,34 @@
+issue:
+    id: ID
+    entity: Issue
+    subentity: Sub-Issue
+    entity_plural: Issues
+    code: Code
+    type: Type
+    description: Description
+    related: Related
+    summary: Summary
+    priority: Priority
+    issuepriority: Priority
+    resolution: Resolution
+    issueresolution: Resolution
+    organization: Organization
+    reporter: Reporter
+    assignee: Assignee
+    owner: Owner
+    created: Created
+    updated: Updated
+    workflow_step: Status
+    subissue: Sub-issues
+    parent_issue: Parent issue
+    collaborator_name: Collaborator name
+    collaborators: Collaborators
+    create: Create Issue
+    children: Children
+    parent: Parent
+    workflow_item: Workflow Item
+    story: Story
+    cancel: Cancel
+    save: Save
+    widget:
+        issue_short_grid: User's issues

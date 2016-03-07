@@ -99,13 +99,14 @@ class IssueController extends Controller
         return array(
             'entity' => $issue,
             'form' => $form->createView(),
-            'formAction' => $formAction
+            //'formAction' => $formAction
         );
         */
         $saved = false;
         //$form = $this->createForm($this->getFormType(), $issue);
         //$form = $this->get('form.factory')->create('issue_form', $issue);
-        if ($this->get('issue.form.handler.issue')->process($issue, null, $this->getUser())) {
+       //var_dump($this->get('issue.form.handler.issue'));die();
+        if ($this->get('issue.form.handler.issue')->process($issue, $this->getUser())) {
             if (!$this->getRequest()->query->get('_widgetContainer')) {
                 return $this->get('oro_ui.router')->redirectAfterSave(
                     ['route' => 'issue_update', 'parameters' => ['id' => $issue->getId()]],
@@ -119,7 +120,7 @@ class IssueController extends Controller
         return array(
             'saved'  => $saved,
             'entity' => $issue,
-            'form'   => $form->createView(),
+            'form'   => $form,
             'formAction' => $formAction
         );
 

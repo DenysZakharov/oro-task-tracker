@@ -130,6 +130,20 @@ datagrid:
             toolbarOptions:
                 hide: true
 
+    assignee-reporter-issue-grid:
+        extends: issue-grid
+        source:
+            query:
+                where:
+                    and:
+                        - issue.assignee = :user_id or issue.reporter = :user_id
+            bind_parameters:
+                - user_id
+        filters: ~
+        options:
+            toolbarOptions:
+                hide: true
+
     widget-short-issue-grid:
         source:
             type: orm
