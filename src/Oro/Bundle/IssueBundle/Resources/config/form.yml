@@ -4,19 +4,18 @@ parameters:
     issue.form.handler.issue.class:     Oro\Bundle\IssueBundle\Form\Handler\IssueHandler
     issue.manager.api.class:            Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     issue.form.handler.issue_api.class: Oro\Bundle\IssueBundle\Form\Handler\IssueApiHandler
-    issue.entity:                       Oro\Bundle\IssueBundle\Entity\Issue
 
 services:
     issue.form.type.issue:
         class: %issue.form.type.issue.class%
         tags:
-            - { name: form.type, alias: issue_form }
+            - { name: form.type, alias: oro_issue }
 
     tracker_issue.form:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
         factory_service: form.factory
-        arguments: ['issue_form', null]
+        arguments: ['oro_issue', 'oro_issue']
 
     issue.form.handler.issue:
         class: %issue.form.handler.issue.class%

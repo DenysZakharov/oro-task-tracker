@@ -11,6 +11,7 @@ class IssueType extends AbstractType
 {
     const BUG = 'bug';
     const TASK = 'task';
+    const SUBTASK = 'subtask';
     const STORY = 'story';
 
     protected static $types = [
@@ -82,12 +83,6 @@ class IssueType extends AbstractType
                     'multiple' => true,
                     'required' => false
                 ]
-            )->add(
-                'tags',
-                'oro_tag_select',
-                [
-                    'label' => 'issue.tag'
-                ]
             );
     }
 
@@ -100,7 +95,7 @@ class IssueType extends AbstractType
 
     public function getName()
     {
-        return 'issue_form';
+        return 'oro_issue';
     }
 
     /**

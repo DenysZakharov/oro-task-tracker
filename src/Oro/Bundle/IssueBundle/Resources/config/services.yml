@@ -1,3 +1,6 @@
+parameters:
+    issue.entity: Oro\Bundle\IssueBundle\Entity\Issue
+
 services:
 #    oro_issue.example:
 #        class: Oro\Bundle\IssueBundle\Example

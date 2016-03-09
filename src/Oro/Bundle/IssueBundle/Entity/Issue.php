@@ -12,7 +12,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
-use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\IssueBundle\Entity\IssuePriority;
 use Oro\Bundle\IssueBundle\Entity\IssueResolution;
@@ -55,7 +54,7 @@ use Oro\Bundle\IssueBundle\Entity\IssueResolution;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Issue extends ExtendIssue implements Taggable
+class Issue extends ExtendIssue
 {
     /**
      * @ORM\Column(type="integer")
@@ -165,8 +164,6 @@ class Issue extends ExtendIssue implements Taggable
      */
     protected $organization;
 
-    protected $tags;
-
     public function __construct()
     {
         parent::__construct();
@@ -229,44 +226,6 @@ class Issue extends ExtendIssue implements Taggable
     public function getWorkflowStep()
     {
         return $this->workflowStep;
-    }
-
-    /**
-     * Returns the unique taggable resource identifier
-     *
-     * @return string
-     */
-    public function getTaggableId()
-    {
-        return $this->getId();
-    }
-
-
-    /**
-     * Returns the collection of tags for this Taggable entity
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getTags()
-    {
-        if (!$this->tags) {
-            $this->tags = new ArrayCollection();
-        }
-
-        return $this->tags;
-    }
-
-    /**
-     * Set tag collection
-     *
-     * @param $tags
-     * @return $this
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
     }
 
     /**

@@ -6,7 +6,7 @@
     {% if resource_granted('issue_create') %}
         {{ UI.addButton({
             'path' : path('issue_create'),
-            'entity_label': 'oro.issue.entity.label'|trans
+            'entity_label': 'issue.entity'|trans
         }) }}
     {% endif %}
 {% endblock %}

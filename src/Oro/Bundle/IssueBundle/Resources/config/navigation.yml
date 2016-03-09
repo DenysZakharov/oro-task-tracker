@@ -9,7 +9,7 @@ oro_menu_config:
             label: 'issue.entity_plural'
             route: 'issue_index'
         shortcut_new_issue:
-            label: 'oro.menu.shortcut_new_issue.label'
+            label: 'menu.shortcut_new_issue'
             route: 'issue_create'
             extras:
                 isCustomAction: true
