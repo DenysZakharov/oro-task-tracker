@@ -23,7 +23,7 @@
     {% endif %}
     {% if entity.type == 'story' and resource_granted('issue_create') %}
         {{ UI.addButton({
-            'path' : path('subissue_create', {'parentIssue' : entity.code}),
+            'path' : path('subissue_create', {'issue' : entity.id}),
             'entity_label': 'issue.subentity'|trans
         }) }}
     {% endif %}
@@ -56,14 +56,14 @@
                     {{ UI.renderProperty('issue.updated'|trans, entity.updated|oro_format_datetime) }}
                     {{ UI.renderProperty('issue.priority'|trans, entity.priority) }}
                     {%- if entity.owner -%}
-                            {% if resource_granted('oro_user_user_view') %}
-                                <a href="{{ path('oro_user_view', {'id': entity.owner.id}) }}">
-                                    {{ UI.renderHtmlProperty('issue.owner'|trans, entity.owner|oro_format_name|escape) }}
-                                </a>
-                            {% else %}
-                                    {{ UI.renderHtmlProperty('issue.owner'|trans, entity.owner|oro_format_name|escape) }}
-                            {% endif %}
-                        {%- endif -%}
+                        {% if resource_granted('oro_user_user_view') %}
+                            <a href="{{ path('oro_user_view', {'id': entity.owner.id}) }}">
+                                {{ UI.renderHtmlProperty('issue.owner'|trans, entity.owner|oro_format_name|escape) }}
+                            </a>
+                        {% else %}
+                            {{ UI.renderHtmlProperty('issue.owner'|trans, entity.owner|oro_format_name|escape) }}
+                        {% endif %}
+                    {%- endif -%}
 
                     {% if entity.parent is not empty %}
                         {% set parentLabel = 'issue.story'|trans ~ ': ' ~ entity.parent.summary %}
@@ -96,6 +96,19 @@
         'useSpan': false,
         'data' : [
         dataGrid.renderGrid('sub-issue-grid', {'parent_id': entity.id})
+        ]
+        }]
+        }] ) %}
+    {% endif %}
+
+    {% if entity.collaborators|length > 0 %}
+        {% set dataBlocks = dataBlocks|merge([{
+        'title': 'issue.collaborators'|trans,
+        'subblocks': [{
+        'title': '',
+        'useSpan': false,
+        'data' : [
+        dataGrid.renderGrid('collaborators-grid', {'issue_id': entity.id})
         ]
         }]
         }] ) %}

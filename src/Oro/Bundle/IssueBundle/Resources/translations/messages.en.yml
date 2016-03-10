@@ -30,5 +30,6 @@ issue:
     story: Story
     cancel: Cancel
     save: Save
+    create_entity: Create Issue
     widget:
         issue_short_grid: User's issues

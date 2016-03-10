@@ -23,8 +23,8 @@ use Oro\Bundle\IssueBundle\Entity\IssueResolution;
  *      name="tracker_issue",
  * )
  * @Config(
- *      routeName="oro_issue_index",
- *      routeView="oro_issue_view",
+ *      routeName="issue_index",
+ *      routeView="issue_view",
  *      defaultValues={
  *           "workflow"={
  *              "active_workflow"="issue_flow"

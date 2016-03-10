@@ -177,3 +177,27 @@ datagrid:
                 pageSize:
                     items: [10]
                     default_per_page: 10
+
+    collaborators-grid:
+        source:
+            type: orm
+            acl_resource: issue_view
+            query:
+                select:
+                    - collaborators.id
+                    - collaborators.firstName
+                from:
+                    - { table: Oro\Bundle\IssueBundle\Entity\Issue, alias: issue }
+                join:
+                    left:
+                         - { join: issue.collaborators, alias: collaborators }
+                where:
+                    and:
+                        - issue.id = :issue_id
+            bind_parameters:
+                - issue_id
+        columns:
+            name:
+                label:         issue.collaborator_name
+            step:
+                renderable: false

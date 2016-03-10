@@ -5,20 +5,16 @@ namespace Oro\Bundle\IssueBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
-
+use Symfony\Component\Form\FormEvents;
+use Oro\Bundle\IssueBundle\Entity\Issue;
+use Symfony\Component\Form\FormEvent;
 
 class IssueType extends AbstractType
 {
     const BUG = 'bug';
     const TASK = 'task';
-    const SUBTASK = 'subtask';
+    const SUBTASK = 'subTask';
     const STORY = 'story';
-
-    protected static $types = [
-        self::BUG => 'Bug',
-        self::TASK => 'Task',
-        self::STORY => 'Story'
-    ];
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -43,7 +39,7 @@ class IssueType extends AbstractType
                 'type',
                 'choice',
                 [
-                    'choices' => self::getIssueTypes(),
+                    'choices' => $this->getIssueTypes(),
                     'label' => 'issue.type',
                     'required' => true
                 ]
@@ -84,6 +80,19 @@ class IssueType extends AbstractType
                     'required' => false
                 ]
             );
+        //$builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData']);
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function onPreSetData(FormEvent $event)
+    {
+        /** @var Issue $issue */
+        $issue = $event->getData();
+        if ($issue && $issue->getParent()) {
+            //$event->getForm();
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -101,8 +110,12 @@ class IssueType extends AbstractType
     /**
      * @return array
      */
-    public static function getIssueTypes()
+    public function getIssueTypes()
     {
-        return self::$types;
+        return [
+            self::BUG => 'Bug',
+            self::TASK => 'Task',
+            self::STORY => 'Story'
+        ];
     }
 }

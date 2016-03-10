@@ -29,10 +29,6 @@ class IssueApiHandler implements TagHandlerInterface
      */
     protected $manager;
 
-    /**
-     * @var TagManager
-     */
-    protected $tagManager;
 
     /** @var SecurityFacade */
     protected $securityFacade;
@@ -87,16 +83,5 @@ class IssueApiHandler implements TagHandlerInterface
     {
         $this->manager->persist($entity);
         $this->manager->flush();
-        if ($this->tagManager) {
-            $this->tagManager->saveTagging($entity);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTagManager(TagManager $tagManager)
-    {
-        $this->tagManager = $tagManager;
     }
 }

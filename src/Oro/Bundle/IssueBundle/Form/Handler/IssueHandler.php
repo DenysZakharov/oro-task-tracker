@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\IssueBundle\Form\Handler;
 
-use Oro\Bundle\IssueBundle\Form\IssueType;
+use Oro\Bundle\IssueBundle\Form\Type\IssueType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -12,10 +12,8 @@ use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\IssueBundle\Entity\Issue;
-use Oro\Bundle\TagBundle\Entity\TagManager;
-use Oro\Bundle\TagBundle\Form\Handler\TagHandlerInterface;
 
-class IssueHandler implements TagHandlerInterface
+class IssueHandler
 {
     /**
      * @var FormInterface
@@ -42,10 +40,6 @@ class IssueHandler implements TagHandlerInterface
      */
     protected $entityRoutingHelper;
 
-    /**
-     * @var TagManager
-     */
-    protected $tagManager;
 
     /**
      * @param FormInterface $form
@@ -74,9 +68,10 @@ class IssueHandler implements TagHandlerInterface
      *
      * @param Issue $entity
      * @param \Oro\Bundle\UserBundle\Entity\User $currentUser
+     * @param string $parentIssue
      * @return bool  True on successful processing, false otherwise
      */
-    public function process(Issue $entity, $currentUser)
+    public function process(Issue $entity, $currentUser, $parentIssue)
     {
         $action = $this->entityRoutingHelper->getAction($this->request);
         $targetEntityClass = $this->entityRoutingHelper->getEntityClassName($this->request);
@@ -93,21 +88,25 @@ class IssueHandler implements TagHandlerInterface
             );
             FormUtils::replaceField($this->form, 'owner', ['read_only' => true]);
         }
-        /*
-        if ($parentIssueCode) {
+
+        if ($parentIssue) {
             $this->form->remove('type');
-            $entity->setType(IssueType::TASK);
+            $entity->setType(IssueType::SUBTASK);
         }
-        */
+
+        if ($entity->getId()) {
+            $this->form->remove('type');
+        } else {
+            $entity->setReporter($currentUser);
+        }
+
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
-
             if ($this->form->isValid()) {
-
-                if ($parentIssueCode) {
-                    $parent = $this->manager->getRepository('OroIssueBundle:Issue')->findOneByCode($parentIssueCode);
+                if ($parentIssue) {
+                    $parent = $this->manager->getRepository('OroIssueBundle:Issue')->findOneByCode($parentIssue);
                     $entity->setParent($parent);
                 }
 
@@ -138,16 +137,5 @@ class IssueHandler implements TagHandlerInterface
     {
         $this->manager->persist($entity);
         $this->manager->flush();
-        if ($this->tagManager) {
-            $this->tagManager->saveTagging($entity);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTagManager(TagManager $tagManager)
-    {
-        $this->tagManager = $tagManager;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\IssueBundle\Controller;
 
+use Oro\Bundle\IssueBundle\Form\Type\IssueType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -72,55 +73,24 @@ class IssueController extends Controller
         return $this->update($issue, $formAction);
     }
 
-    private function update(Issue $issue, $formAction)
+    private function update(Issue $issue, $formAction, $parentIssue = false)
     {
-        /*
-        $form = $this->get('form.factory')->create('issue_form', $issue);
-        //$handler = $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($issue);
-            $entityManager->flush();
-
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route' => 'issue_update',
-                    'parameters' => array('id' => $issue->getId()),
-                ],
-                [
-                    'route' => 'issue_view',
-                    'parameters' => array('id' => $issue->getId())
-                ],
-                $issue
-            );
-        }
-
-        return array(
-            'entity' => $issue,
-            'form' => $form->createView(),
-            //'formAction' => $formAction
-        );
-        */
         $saved = false;
-        //$form = $this->createForm($this->getFormType(), $issue);
-        //$form = $this->get('form.factory')->create('issue_form', $issue);
-       //var_dump($this->get('issue.form.handler.issue'));die();
-        if ($this->get('issue.form.handler.issue')->process($issue, $this->getUser())) {
-            if (!$this->getRequest()->query->get('_widgetContainer')) {
+        if ($this->get('issue.form.handler.issue')->process($issue, $this->getUser(), $parentIssue)) {
+            $saved = true;
+            if (!$this->getRequest()->get('_widgetContainer')) {
                 return $this->get('oro_ui.router')->redirectAfterSave(
                     ['route' => 'issue_update', 'parameters' => ['id' => $issue->getId()]],
                     ['route' => 'issue_view', 'parameters' => ['id' => $issue->getId()]],
                     $issue
                 );
             }
-            $saved = true;
         }
-        $form = $this->get('issue.form.handler.issue')->getForm()->createView();
+
         return array(
-            'saved'  => $saved,
             'entity' => $issue,
-            'form'   => $form,
+            'saved'  => $saved,
+            'form'   => $this->get('issue.form.handler.issue')->getForm()->createView(),
             'formAction' => $formAction
         );
 
@@ -139,7 +109,7 @@ class IssueController extends Controller
     }
 
     /**
-     * @Route("/create/subtask/{parentIssue}", name="subissue_create")
+     * @Route("/create/subtask/{issue}", name="subissue_create", requirements={"id"="\d+"})
      * @Acl(
      *      id="issue_create",
      *      type="entity",
@@ -147,21 +117,23 @@ class IssueController extends Controller
      *      permission="CREATE"
      * )
      * @Template("OroIssueBundle:Issue:update.html.twig")
-     * @param string $parentIssue
+     * @param Issue $issue
      * @return array
      */
-    public function createSubissueAction($parentIssue, Request $request)
+    public function createSubissueAction(Issue $issue)
     {
-        $issue = new Issue();
+        $subIssue = new Issue();
+        $subIssue
+            ->setReporter($this->getUser())
+            ->setParent($issue)
+            ->setType(IssueType::SUBTASK);
 
-        $issue->setParent($issue);
         $formAction = $this->get('oro_entity.routing_helper')
             ->generateUrlByRequest(
                 'subissue_create',
-                $request,
-                ['parentIssue' => $parentIssue]
+                $this->getRequest(),
+                ['issue' => $issue]
             );
-//var_dump($formAction);
-        return $this->update($issue, $formAction);
+        return $this->update($subIssue, $formAction, $issue);
     }
 }
