@@ -50,7 +50,7 @@ use Oro\Bundle\IssueBundle\Entity\IssueResolution;
  *          }
  *      }
  * )
- * @SuppressWarnings(PHPMD.TooManyFields)
+ * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -389,7 +389,7 @@ class Issue extends ExtendIssue
      *
      * @return Issue
      */
-    public function setPriority(\Oro\Bundle\IssueBundle\Entity\IssuePriority $priority = null)
+    public function setPriority(IssuePriority $priority = null)
     {
         $this->priority = $priority;
 
@@ -413,7 +413,7 @@ class Issue extends ExtendIssue
      *
      * @return Issue
      */
-    public function setResolution(\Oro\Bundle\IssueBundle\Entity\IssueResolution $resolution = null)
+    public function setResolution(IssueResolution $resolution = null)
     {
         $this->resolution = $resolution;
 
@@ -437,7 +437,7 @@ class Issue extends ExtendIssue
      *
      * @return Issue
      */
-    public function setReporter(\Oro\Bundle\UserBundle\Entity\User $reporter = null)
+    public function setReporter(User $reporter = null)
     {
         $this->reporter = $reporter;
 
@@ -461,7 +461,7 @@ class Issue extends ExtendIssue
      *
      * @return Issue
      */
-    public function setAssignee(\Oro\Bundle\UserBundle\Entity\User $assignee = null)
+    public function setAssignee(User $assignee = null)
     {
         $this->assignee = $assignee;
 
@@ -485,7 +485,7 @@ class Issue extends ExtendIssue
      *
      * @return Issue
      */
-    public function addRelatedIssue(\Oro\Bundle\IssueBundle\Entity\Issue $relatedIssue)
+    public function setRelatedIssue(Issue $relatedIssue)
     {
         $this->relatedIssues[] = $relatedIssue;
 
@@ -497,7 +497,7 @@ class Issue extends ExtendIssue
      *
      * @param \Oro\Bundle\IssueBundle\Entity\Issue $relatedIssue
      */
-    public function removeRelatedIssue(\Oro\Bundle\IssueBundle\Entity\Issue $relatedIssue)
+    public function removeRelatedIssue(Issue $relatedIssue)
     {
         $this->relatedIssues->removeElement($relatedIssue);
     }
@@ -517,13 +517,32 @@ class Issue extends ExtendIssue
      *
      * @param \Oro\Bundle\UserBundle\Entity\User $collaborator
      *
-     * @return Issue
+     * @return $this
      */
-    public function addCollaborator(\Oro\Bundle\UserBundle\Entity\User $collaborator)
+    public function addCollaborator(User $collaborator)
     {
-        $this->collaborators[] = $collaborator;
-
+        if (!$this->hasCollaborator($collaborator)) {
+            $this->collaborators[] = $collaborator;
+        }
         return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function hasCollaborator($user)
+    {
+        $collaborators = $this->getCollaborators();
+        if ($collaborators->count()) {
+            foreach ($collaborators as $collaborator) {
+                if ($collaborator->getId() === $user->getId()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -531,7 +550,7 @@ class Issue extends ExtendIssue
      *
      * @param \Oro\Bundle\UserBundle\Entity\User $collaborator
      */
-    public function removeCollaborator(\Oro\Bundle\UserBundle\Entity\User $collaborator)
+    public function removeCollaborator(User $collaborator)
     {
         $this->collaborators->removeElement($collaborator);
     }
@@ -553,7 +572,7 @@ class Issue extends ExtendIssue
      *
      * @return Issue
      */
-    public function setParent(\Oro\Bundle\IssueBundle\Entity\Issue $parent = null)
+    public function setParent(Issue $parent = null)
     {
         $this->parent = $parent;
 
@@ -577,7 +596,7 @@ class Issue extends ExtendIssue
      *
      * @return Issue
      */
-    public function addChild(\Oro\Bundle\IssueBundle\Entity\Issue $child)
+    public function addChild(Issue $child)
     {
         $this->children[] = $child;
 
@@ -589,7 +608,7 @@ class Issue extends ExtendIssue
      *
      * @param \Oro\Bundle\IssueBundle\Entity\Issue $child
      */
-    public function removeChild(\Oro\Bundle\IssueBundle\Entity\Issue $child)
+    public function removeChild(Issue $child)
     {
         $this->children->removeElement($child);
     }
@@ -611,7 +630,7 @@ class Issue extends ExtendIssue
      *
      * @return Issue
      */
-    public function setOwner(\Oro\Bundle\UserBundle\Entity\User $owner = null)
+    public function setOwner(User $owner = null)
     {
         $this->owner = $owner;
 
@@ -635,7 +654,7 @@ class Issue extends ExtendIssue
      *
      * @return Issue
      */
-    public function setOrganization(\Oro\Bundle\OrganizationBundle\Entity\Organization $organization = null)
+    public function setOrganization(Organization $organization = null)
     {
         $this->organization = $organization;
 

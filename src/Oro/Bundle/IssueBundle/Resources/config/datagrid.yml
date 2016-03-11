@@ -28,26 +28,26 @@ datagrid:
                         - { join: issue.assignee, alias: issueAssignee }
         columns:
             code:
-                label:         issue.code.label
+                label:         issue.code
             summary:
-                label:         issue.summary.label
+                label:         issue.summary
             type:
-                label:         issue.type.label
+                label:         issue.type
             priority:
-                label:         issue.priority.label
+                label:         issue.priority
             workflowStepLabel:
-                label:         issue.status.label
+                label:         issue.status
             resolution:
-                label:         issue.resolution.label
+                label:         issue.resolution
             issueReporterName:
-                label:         issue.reporter.label
+                label:         issue.reporter
             issueAssigneeName:
-                label:         issue.assignee.label
+                label:         issue.assignee
             created:
-                label:         issue.created.label
+                label:         issue.created
                 frontend_type: datetime
             updated:
-                label:         issue.updated.label
+                label:         issue.updated
                 frontend_type: datetime
         sorters:
             columns:
@@ -167,9 +167,9 @@ datagrid:
                 - user_id
         columns:
             code:
-                label:         issue.code.label
+                label: issue.code
             summary:
-                label:         issue.summary.label
+                label: issue.summary
         options:
             entity_pagination: true
             toolbarOptions:
@@ -198,6 +198,6 @@ datagrid:
                 - issue_id
         columns:
             name:
-                label:         issue.collaborator_name
+                label: issue.collaborator_name
             step:
                 renderable: false

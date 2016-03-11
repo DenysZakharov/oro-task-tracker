@@ -1,6 +1,14 @@
 oro_dashboard_config:
     widgets:
-        issue_short_grid:
-            label: widget.issue_short_grid
+        issue_bar_chart:
+            icon: bundles/orocalendar/img/my_calendar.png
+            description: issue.widget.chart_desc
+            label: issue.widget.bar_chart
             acl:   issue_view
-            route: issue_index
+            route: issue_barchart
+        issue_short_grid:
+            icon: bundles/orocalendar/img/my_calendar.png
+            description: issue.widget.grid_desc
+            label: issue.widget.issue_grid
+            acl:   issue_view
+            route: issue_shortgrid

@@ -32,4 +32,7 @@ issue:
     save: Save
     create_entity: Create Issue
     widget:
-        issue_short_grid: User's issues
+        issue_grid: User's issues
+        bar_chart: User's bar chart
+        grid_desc: This widget displays short issue grid
+        chart_desc: This widget displays bar chart
