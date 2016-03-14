@@ -52,8 +52,8 @@
                     {{ UI.renderProperty('issue.resolution'|trans, entity.resolution) }}
                     {{ UI.renderProperty('issue.assignee'|trans, entity.assignee) }}
                     {{ UI.renderProperty('issue.reporter'|trans, entity.reporter) }}
-                    {{ UI.renderProperty('issue.created'|trans, entity.created|oro_format_datetime) }}
-                    {{ UI.renderProperty('issue.updated'|trans, entity.updated|oro_format_datetime) }}
+                    {{ UI.renderProperty('issue.created'|trans, entity.createdAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('issue.update'|trans, entity.updatedAt|oro_format_datetime) }}
                     {{ UI.renderProperty('issue.priority'|trans, entity.priority) }}
                     {%- if entity.owner -%}
                         {% if resource_granted('oro_user_user_view') %}

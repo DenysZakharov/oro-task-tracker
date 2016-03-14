@@ -4,7 +4,7 @@ oro_menu_config:
             label: Issue label
             uri: '#'
             extras:
-                position: 300
+                position: 1
         issue_tab_link:
             label: 'issue.entity_plural'
             route: 'issue_index'

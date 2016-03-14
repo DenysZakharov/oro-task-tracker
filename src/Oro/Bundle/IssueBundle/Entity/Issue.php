@@ -60,107 +60,254 @@ class Issue extends ExtendIssue
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Id",
+     *            "order"="10"
+     *        }
+     *    }
+     * )
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Summary",
+     *            "order"="30"
+     *        }
+     *    }
+     * )
      */
     protected $summary;
 
     /**
      * @ORM\Column(name="code", type="string", length=255, unique=true)
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Code",
+     *            "order"="20"
+     *        }
+     *    }
+     * )
      */
     protected $code;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Description",
+     *            "order"="40"
+     *        }
+     *    }
+     * )
      */
     protected $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Type",
+     *            "order"="50"
+     *        }
+     *    }
+     * )
      */
     protected $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\IssueBundle\Entity\IssuePriority")
      * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Priority",
+     *            "order"="60"
+     *        }
+     *    }
+     * )
      **/
     protected $priority;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\IssueBundle\Entity\IssueResolution")
      * @ORM\JoinColumn(name="resolution_id", referencedColumnName="id")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Resolution",
+     *            "order"="70"
+     *        }
+     *    }
+     * )
      **/
     protected $resolution;
 
     /**
      * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
      * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "excluded"=true
+     *        }
+     *    }
+     * )
      */
     protected $workflowItem;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
      * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "excluded"=true
+     *        }
+     *    }
+     * )
      */
     protected $workflowStep;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Reporter",
+     *            "order"="80",
+     *            "short"=true
+     *        }
+     *    }
+     * )
      **/
     protected $reporter;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Assignee",
+     *            "order"="90",
+     *            "short"=true
+     *        }
+     *    }
+     * )
      **/
     protected $assignee;
 
     /**
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\IssueBundle\Entity\Issue", inversedBy="relatedIssues")
      * @ORM\JoinTable(name="issue_related")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="RelatedIssues",
+     *            "order"="100"
+     *        }
+     *    }
+     * )
      **/
     protected $relatedIssues;
 
     /**
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinTable(name="issue_collaborator")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "excluded"=true
+     *        }
+     *    }
+     * )
      */
     protected $collaborators;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\IssueBundle\Entity\Issue", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "excluded"=true
+     *        }
+     *    }
+     * )
      **/
     protected $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "excluded"=true
+     *        }
+     *    }
+     * )
      **/
     protected $children;
 
     /**
-     * @ORM\Column(name="created", type="datetime")
+     * @ORM\Column(name="createdAt", type="datetime")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "excluded"=true
+     *        }
+     *    }
+     * )
      **/
-    protected $created;
+    protected $createdAt;
 
     /**
-     * @ORM\Column(name="updated", type="datetime")
+     * @ORM\Column(name="updatedAt", type="datetime")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "excluded"=true
+     *        }
+     *    }
+     * )
      **/
-    protected $updated;
+    protected $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Owner",
+     *            "order"="150"
+     *        }
+     *    }
+     * )
      */
     protected $owner;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
+     * @ConfigField(
+     *    defaultValues={
+     *        "importexport"={
+     *            "header"="Organization",
+     *            "order"="160"
+     *        }
+     *    }
+     * )
      */
     protected $organization;
 
@@ -178,8 +325,8 @@ class Issue extends ExtendIssue
      */
     public function doOnPrePersist()
     {
-        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
-        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
@@ -187,7 +334,7 @@ class Issue extends ExtendIssue
      */
     public function preUpdate()
     {
-        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
@@ -311,51 +458,51 @@ class Issue extends ExtendIssue
     }
 
     /**
-     * Set created
+     * Set createdAt
      *
-     * @param \DateTime $created
+     * @param \DateTime $createdAt
      *
      * @return Issue
      */
-    public function setCreated($created)
+    public function setCreatedAt($createdAt)
     {
-        $this->created = $created;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     /**
-     * Get created
+     * Get createdAt
      *
      * @return \DateTime
      */
-    public function getCreated()
+    public function getCreatedAt()
     {
-        return $this->created;
+        return $this->createdAt;
     }
 
     /**
-     * Set updated
+     * Set updatedAt
      *
-     * @param \DateTime $updated
+     * @param \DateTime $updatedAt
      *
      * @return Issue
      */
-    public function setUpdated($updated)
+    public function setUpdatedAt($updatedAt)
     {
-        $this->updated = $updated;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     /**
-     * Get updated
+     * Get updatedAt
      *
      * @return \DateTime
      */
-    public function getUpdated()
+    public function getUpdatedAt()
     {
-        return $this->updated;
+        return $this->updatedAt;
     }
 
     /**

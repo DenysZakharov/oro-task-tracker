@@ -13,8 +13,8 @@ datagrid:
                     - issueResolution.label as resolution
                     - issueReporter.firstName as issueReporterName
                     - issueAssignee.firstName as issueAssigneeName
-                    - issue.created
-                    - issue.updated
+                    - issue.createdAt
+                    - issue.updatedAt
                     - workflowStep.label as workflowStepLabel
                 from:
                     - { table: Oro\Bundle\IssueBundle\Entity\Issue, alias: issue }
@@ -44,10 +44,10 @@ datagrid:
             issueAssigneeName:
                 label:         issue.assignee
             created:
-                label:         issue.created
+                label:         issue.createdAt
                 frontend_type: datetime
             updated:
-                label:         issue.updated
+                label:         issue.updatedAt
                 frontend_type: datetime
         sorters:
             columns:
@@ -68,9 +68,9 @@ datagrid:
                 issueAssigneeName:
                     data_name: issueAssigneeName
                 created:
-                    data_name: issue.created
+                    data_name: issue.createdAt
                 updated:
-                    data_name: issue.updated
+                    data_name: issue.updatedAt
             default:
                 updated: DESC
         filters:
@@ -91,6 +91,10 @@ datagrid:
                 type:       url
                 route:      issue_update
                 params:     [ id ]
+            delete_link:
+                type:       url
+                route:      tracker_api_delete_issue
+                params:     [ id ]
         actions:
             view:
                 type:          navigate
@@ -105,6 +109,12 @@ datagrid:
                 label:         grid.action.update
                 icon:          edit
                 link:          update_link
+            delete:
+                type:          delete
+                acl_resource:  issue_delete
+                label:         grid.action.delete
+                icon:          trash
+                link:          delete_link
         options:
             entity_pagination: true
 

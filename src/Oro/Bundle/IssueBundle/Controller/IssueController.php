@@ -73,6 +73,12 @@ class IssueController extends Controller
         return $this->update($issue, $formAction);
     }
 
+    /**
+     * @param Issue $issue
+     * @param string $formAction
+     * @param $parentIssue
+     * @return array
+     */
     private function update(Issue $issue, $formAction, $parentIssue = false)
     {
         $saved = false;
@@ -81,8 +87,7 @@ class IssueController extends Controller
             if (!$this->getRequest()->get('_widgetContainer')) {
                 return $this->get('oro_ui.router')->redirectAfterSave(
                     ['route' => 'issue_update', 'parameters' => ['id' => $issue->getId()]],
-                    ['route' => 'issue_view', 'parameters' => ['id' => $issue->getId()]],
-                    $issue
+                    ['route' => 'issue_view', 'parameters' => ['id' => $issue->getId()]]
                 );
             }
         }
@@ -123,10 +128,10 @@ class IssueController extends Controller
     public function createSubissueAction(Issue $issue, Request $request)
     {
         $subIssue = new Issue();
-        $subIssue
-            ->setReporter($this->getUser())
-            ->setParent($issue)
-            ->setType(IssueType::SUBTASK);
+       // $subIssue
+       //     ->setReporter($this->getUser())
+       //     ->setParent($issue)
+       //     ->setType(IssueType::SUBTASK);
 
         $formAction = $this->get('oro_entity.routing_helper')
             ->generateUrlByRequest(
@@ -144,7 +149,7 @@ class IssueController extends Controller
      * @param $widget
      * @return array $widgetAttr
      */
-    public function statusbarchartAction($widget)
+    public function statusBarChartAction($widget)
     {
         $data = $this->getDoctrine()->getRepository('OroIssueBundle:Issue')->findGroupedByStatus();
 
@@ -172,7 +177,7 @@ class IssueController extends Controller
      * @param $widget
      * @return array $widgetAttr
      */
-    public function issueshortgridAction($widget)
+    public function issueShortGridAction($widget)
     {
         $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
         $widgetAttr['user'] = $this->getUser();

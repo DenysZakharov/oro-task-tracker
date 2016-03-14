@@ -1,14 +1,23 @@
 <?php
 
-namespace Oro\Bundle\IssueBundle\Migrations\Data\ORM;
+namespace Oro\Bundle\IssueBundle\Migrations\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\IssueBundle\Entity\IssuePriority;
+use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
-class LoadIssuePriority extends AbstractFixture
+class LoadIssuePriority extends AbstractFixture implements VersionedFixtureInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getVersion()
+    {
+        return '1.1';
+    }
+
     /**
      * @var array
      */

@@ -13,7 +13,6 @@ definitions:
                 method: addCollaborator
                 method_parameters: [$reporter]
 
-
     add_collaborator_by_note:
         label: 'Set issue updatedAt on adding a new note'
         enabled: true
@@ -43,6 +42,10 @@ triggers:
         -
             event:  update
             field:  assignee
+            queued: false
+        -
+            event: update
+            field: owner
             queued: false
 
     add_collaborator_by_note:

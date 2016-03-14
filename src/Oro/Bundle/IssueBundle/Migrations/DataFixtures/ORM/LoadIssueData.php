@@ -1,19 +1,21 @@
 <?php
-namespace Oro\Bundle\IssueBundle\Migrations\Data\ORM;
+namespace Oro\Bundle\IssueBundle\Migrations\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
+use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 use Oro\Bundle\IssueBundle\Entity\Issue;
 
-class LoadIssueData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadIssueData extends AbstractFixture implements VersionedFixtureInterface
 {
-    /** @var ContainerInterface */
-    private $container;
+    /**
+     * {@inheritdoc}
+     */
+    public function getVersion()
+    {
+        return '1.0';
+    }
 
     /** @var array $issues */
     protected static $issues = [
@@ -65,26 +67,6 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface, 
             'priority' => 'major'
         ]
     ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'Oro\Bundle\IssueBundle\Migrations\Data\Demo\ORM\LoadUserData'
-        ];
-    }
-
-    /**
-     * Set container
-     *
-     * @param ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
 
     /**
      * {@inheritdoc}

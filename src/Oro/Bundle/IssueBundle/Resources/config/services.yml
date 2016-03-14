@@ -5,9 +5,9 @@ services:
 #    oro_issue.example:
 #        class: Oro\Bundle\IssueBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
-    issue.manager.api:
-        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - Oro\Bundle\IssueBundle\Entity\Issue
-            - "@doctrine.orm.entity_manager"
+#    issue.manager.api:
+#        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+#       parent: oro_soap.manager.entity_manager.abstract
+#        arguments:
+#            - Oro\Bundle\IssueBundle\Entity\Issue
+#            - "@doctrine.orm.entity_manager"
