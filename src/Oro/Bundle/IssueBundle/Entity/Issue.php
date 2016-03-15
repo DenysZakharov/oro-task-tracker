@@ -5,7 +5,6 @@ namespace Oro\Bundle\IssueBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Oro\Bundle\IssueBundle\Model\ExtendIssue;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -19,9 +18,7 @@ use Oro\Bundle\IssueBundle\Entity\IssueResolution;
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\IssueBundle\Entity\Repository\IssueRepository")
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(
- *      name="tracker_issue",
- * )
+ * @ORM\Table(name="tracker_issue")
  * @Config(
  *      routeName="issue_index",
  *      routeView="issue_view",

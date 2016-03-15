@@ -67,10 +67,9 @@ class IssueHandler
      *
      * @param Issue $entity
      * @param \Oro\Bundle\UserBundle\Entity\User $currentUser
-     * @param string $parentIssue
      * @return bool  True on successful processing, false otherwise
      */
-    public function process(Issue $entity, $currentUser, $parentIssue)
+    public function process(Issue $entity, $currentUser)
     {
         $action = $this->entityRoutingHelper->getAction($this->request);
         $targetEntityClass = $this->entityRoutingHelper->getEntityClassName($this->request);
@@ -87,32 +86,15 @@ class IssueHandler
             );
             FormUtils::replaceField($this->form, 'owner', ['read_only' => true]);
         }
-
-        if ($parentIssue) {
-            $this->form->remove('type');
-            $entity->setType(IssueType::SUBTASK);
-        }
-
-        if ($entity->getId()) {
-            $this->form->remove('type');
-        } else {
-            $entity->setReporter($currentUser);
-        }
-
+        $this->checkForm($entity, $currentUser);
         $this->form->setData($entity);
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
             if ($this->form->isValid()) {
-                if ($parentIssue) {
-                    $parent = $this->manager->getRepository('OroIssueBundle:Issue')->findOneByCode($parentIssue);
-                    $entity->setParent($parent);
-                }
-
                 $this->onSuccess($entity);
                 return true;
             }
         }
-
         return false;
     }
 
@@ -124,6 +106,19 @@ class IssueHandler
     public function getForm()
     {
         return $this->form;
+    }
+
+    /**
+     * @param Issue $entity
+     * @param $currentUser
+     */
+    protected function checkForm(Issue $entity, $currentUser)
+    {
+        if ($entity->getId() || $entity->getParent()) {
+            $this->form->remove('type');
+        } else {
+            $entity->setReporter($currentUser);
+        }
     }
 
     /**

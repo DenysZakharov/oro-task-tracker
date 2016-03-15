@@ -1,42 +1,36 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig'] %}
 
-{% if form.vars.value.id %}
-    {% set formAction = path('issue_update', { 'id': form.vars.value.id }) %}
-{% else %}
-    {% set formAction = path('issue_create') %}
-{% endif %}
+{% set entityId = entity.id %}
 
 {% block navButtons %}
-
-    {{ UI.cancelButton(path('issue_index')) }}
     {% set html = UI.saveAndCloseButton() %}
     {% if resource_granted('issue_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
-    {{ UI.dropdownSaveButton({ 'html': html }) }}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+    {{ UI.cancelButton(path('issue_index')) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
-    {% if form.vars.value.id %}
+    {% if entityId %}
         {% set breadcrumbs = {
-        'entity':      entity,
-        'indexPath':   path('issue_index'),
-        'indexLabel': 'Issues'|trans,
+        'entity': entity,
+        'indexPath': path('issue_index'),
+        'indexLabel': 'issue.entity_plural'|trans,
         'entityTitle': entity.summary
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'issue.create_entity'|trans({'%entityName%': 'Issue'|trans}) %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'issue.entity'|trans}) %}
         {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
     {% endif %}
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'issue_form' %}
-
+    {% set id = 'issue-form' %}
     {% set dataBlocks = [{
-    'title': 'General'|trans,
+    'title': 'General Info'|trans,
     'class': 'active',
     'subblocks': [{
     'title': '',
@@ -51,8 +45,7 @@
     form.owner is defined ? form_row(form.owner) : ''
     ]
     }]
-    }]
-    %}
+    }] %}
 
     {% set data = {
     'formErrors': form_errors(form)? form_errors(form) : null,

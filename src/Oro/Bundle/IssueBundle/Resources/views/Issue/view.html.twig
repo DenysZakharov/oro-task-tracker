@@ -23,7 +23,7 @@
     {% endif %}
     {% if entity.type == 'story' and resource_granted('issue_create') %}
         {{ UI.addButton({
-            'path' : path('subissue_create', {'issue' : entity.id}),
+            'path' : path('subissue_create', {'issueCode' : entity.code}),
             'entity_label': 'issue.subentity'|trans
         }) }}
     {% endif %}
@@ -66,12 +66,7 @@
                     {%- endif -%}
 
                     {% if entity.parent is not empty %}
-                        {% set parentLabel = 'issue.story'|trans ~ ': ' ~ entity.parent.summary %}
-                        {{ UI.button({
-                            'path':  path('issue_view', {'id': entity.parent.id}),
-                            'label': parentLabel,
-                            'title': parentLabel,
-                        }) }}
+                        <a href="{{ path('issue_view', {'id': entity.parent.id}) }}">{{ UI.renderProperty('issue.story'|trans, entity.parent.summary) }}</a>
                     {% endif %}
                 </div>
             </div>
@@ -100,7 +95,6 @@
         }]
         }] ) %}
     {% endif %}
-
     {% if entity.collaborators|length > 0 %}
         {% set dataBlocks = dataBlocks|merge([{
         'title': 'issue.collaborators'|trans,

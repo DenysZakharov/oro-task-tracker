@@ -3,8 +3,10 @@
 namespace Oro\Bundle\IssueBundle\Migrations\Schema\v1_1;
 
 use Doctrine\DBAL\Schema\Schema;
+
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
@@ -26,6 +28,14 @@ class NoteIssue implements Migration, NoteExtensionAwareInterface
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $this->noteExtension->addNoteAssociation($schema, 'tracker_issue');
+        self::noteAssociation($schema, $this->noteExtension);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function noteAssociation(Schema $schema, NoteExtension $noteExtension)
+    {
+        $noteExtension->addNoteAssociation($schema, 'tracker_issue');
     }
 }

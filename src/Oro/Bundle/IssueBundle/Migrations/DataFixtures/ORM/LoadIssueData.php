@@ -17,50 +17,52 @@ class LoadIssueData extends AbstractFixture implements VersionedFixtureInterface
         return '1.0';
     }
 
-    /** @var array $issues */
+    /**
+     * @var array $issues
+     */
     protected static $issues = [
         [
-            'summary'  => 'My new story',
-            'code'  => 'new story',
-            'type'     => 'story',
+            'summary' => 'My new story',
+            'code' => 'new story',
+            'type' => 'story',
             'reporter' => 'user_manager',
             'assignee' => 'user_admin',
             'owner' => 'user_user',
             'priority' => 'major'
         ],
         [
-            'summary'  => 'Create database',
-            'code'  => 'database',
-            'type'     => 'task',
+            'summary' => 'Create database',
+            'code' => 'database',
+            'type' => 'task',
             'reporter' => 'user_manager',
             'assignee' => 'user_user',
             'owner' => 'user_user',
             'priority' => 'major',
-            'subtask' => true
+            'subTask' => true
         ],
         [
-            'summary'  => 'Issue CRUD',
-            'code'  => 'crud',
-            'type'     => 'task',
+            'summary' => 'Issue CRUD',
+            'code' => 'crud',
+            'type' => 'task',
             'reporter' => 'user_manager',
             'assignee' => 'user_user',
             'owner' => 'user_user',
             'priority' => 'major',
-            'subtask' => true
+            'subTask' => true
         ],
         [
-            'summary'  => 'Management',
-            'code'  => 'management',
-            'type'     => 'task',
+            'summary' => 'Management',
+            'code' => 'management',
+            'type' => 'task',
             'reporter' => 'user_manager',
             'assignee' => 'user_manager',
             'owner' => 'user_user',
             'priority' => 'minor'
         ],
         [
-            'summary'  => 'Estimates',
-            'code'  => 'estimates',
-            'type'     => 'task',
+            'summary' => 'Estimates',
+            'code' => 'estimates',
+            'type' => 'task',
             'reporter' => 'user_manager',
             'assignee' => 'user_user',
             'owner' => 'user_user',
@@ -100,20 +102,15 @@ class LoadIssueData extends AbstractFixture implements VersionedFixtureInterface
             $issue->setReporter($users[$data['reporter']]);
             $issue->setType($data['type']);
             $issue->setPriority($priorities[$data['priority']]);
-
-            if ($data['type'] === 'story') {
-                $story = $issue;
-            }
-
-            if (isset($data['subtask'])) {
-
+            if (isset($data['subTask'])) {
                 if (!$issue) {
                     continue;
                 }
-
                 $issue->setParent($story);
             }
-
+            if ($data['type'] === 'story') {
+                $story = $issue;
+            }
             $manager->persist($issue);
         }
 

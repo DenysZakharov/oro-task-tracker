@@ -16,6 +16,10 @@ class IssueType extends AbstractType
     const SUBTASK = 'subTask';
     const STORY = 'story';
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -95,6 +99,9 @@ class IssueType extends AbstractType
         }
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -102,6 +109,9 @@ class IssueType extends AbstractType
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'oro_issue';

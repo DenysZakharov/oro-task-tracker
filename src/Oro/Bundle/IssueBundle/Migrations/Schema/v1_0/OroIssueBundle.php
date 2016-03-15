@@ -15,6 +15,14 @@ class OroIssueBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
+        self::addIssueTable($schema);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function addIssueTable(Schema $schema)
+    {
         $options = new OroOptions();
         $table = $schema->createTable('tracker_issue');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
@@ -31,19 +39,11 @@ class OroIssueBundle implements Migration
         $table->addColumn('summary', 'string', ['length' => 255]);
         $table->addColumn('type', 'string', ['length' => 255]);
         $table->addColumn('description', 'text', ['notnull' => false]);
-        $table->addColumn('created', 'datetime', []);
-        $table->addColumn('updated', 'datetime', []);
+        $table->addColumn('createdAt', 'datetime', []);
+        $table->addColumn('updatedAt', 'datetime', []);
+        $table->addUniqueIndex(['code'], 'UNIQ_6463563565656398');
+        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_6546H7655K576');
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['code'], 'UNIQ_46A8C3E677153098');
-        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_46A8C3E61023C4EE');
-        $table->addIndex(['priority_id'], 'IDX_46A8C3E6497B19F9', []);
-        $table->addIndex(['resolution_id'], 'IDX_46A8C3E612A1C43A', []);
-        $table->addIndex(['workflow_step_id'], 'IDX_46A8C3E671FE882C', []);
-        $table->addIndex(['reporter_id'], 'IDX_46A8C3E6E1CFE6F5', []);
-        $table->addIndex(['assignee_id'], 'IDX_46A8C3E659EC7D60', []);
-        $table->addIndex(['parent_id'], 'IDX_46A8C3E6727ACA70', []);
-        $table->addIndex(['owner_id'], 'IDX_46A8C3E67E3C61F9', []);
-        $table->addIndex(['organization_id'], 'IDX_46A8C3E632C8A3DE', []);
         // Hide tags column from grid by default.
         $options->set('tag', 'enableGridColumn', false);
 
@@ -51,5 +51,27 @@ class OroIssueBundle implements Migration
         $options->set('tag', 'enableGridFilter', false);
 
         $table->addOption(OroOptions::KEY, $options);
+
+        $table = $schema->createTable('issue_collaborator');
+        $table->addColumn('issue_id', 'integer', []);
+        $table->addColumn('user_id', 'integer', []);
+        $table->setPrimaryKey(['issue_id', 'user_id']);
+        $table->addIndex(['issue_id'], 'IDX_F7987FS797F7979F', []);
+        $table->addIndex(['user_id'], 'IDX_F88908G98D08D980', []);
+
+        $table = $schema->createTable('issue_priority');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('code', 'string', ['length' => 255]);
+        $table->addColumn('label', 'string', ['length' => 255]);
+        $table->addColumn('priority', 'integer', ['default' => '1']);
+        $table->setPrimaryKey(['id']);
+
+        $table = $schema->createTable('issue_resolution');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('code', 'string', ['length' => 255]);
+        $table->addColumn('label', 'string', ['length' => 255]);
+        $table->addColumn('priority', 'integer', ['default' => '1']);
+        $table->setPrimaryKey(['id']);
     }
 }
+
