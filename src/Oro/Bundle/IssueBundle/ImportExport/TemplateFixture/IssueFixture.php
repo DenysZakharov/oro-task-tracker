@@ -47,7 +47,7 @@ class IssueFixture extends AbstractTemplateRepository implements TemplateFixture
         $entityRepository = 'Oro\Bundle\OrganizationBundle\Entity\Organization';
         $organization = $this->templateManager
             ->getEntityRepository($entityRepository)
-            ->getEntity('default');
+            ->getEntity('oro');
 
         $priority = new IssuePriority();
         $priority->setCode('major');

@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\IssueBundle\Form\Handler;
 
-use Oro\Bundle\IssueBundle\Form\Type\IssueType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -8,11 +8,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\IssueBundle\Entity\Issue;
-use Oro\Bundle\TagBundle\Entity\TagManager;
-use Oro\Bundle\TagBundle\Form\Handler\TagHandlerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
-class IssueApiHandler implements TagHandlerInterface
+class IssueApiHandler
 {
     /**
      * @var FormInterface

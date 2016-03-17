@@ -61,7 +61,7 @@ class IssueResolution
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -85,7 +85,7 @@ class IssueResolution
     /**
      * Get label
      *
-     * @return string 
+     * @return string
      */
     public function getLabel()
     {
@@ -109,7 +109,7 @@ class IssueResolution
     /**
      * Get priority
      *
-     * @return integer 
+     * @return integer
      */
     public function getPriority()
     {

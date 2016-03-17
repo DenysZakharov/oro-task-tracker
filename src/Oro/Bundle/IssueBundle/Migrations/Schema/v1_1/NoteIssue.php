@@ -18,6 +18,14 @@ class NoteIssue implements Migration, NoteExtensionAwareInterface
     /**
      * {@inheritdoc}
      */
+    public function getMigrationVersion()
+    {
+        return 'v1_1';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setNoteExtension(NoteExtension $noteExtension)
     {
         $this->noteExtension = $noteExtension;
@@ -28,13 +36,16 @@ class NoteIssue implements Migration, NoteExtensionAwareInterface
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        self::noteAssociation($schema, $this->noteExtension);
+        self::addNoteAssociations($schema, $this->noteExtension);
     }
 
     /**
-     * {@inheritdoc}
+     * Enable notes for Account entity
+     *
+     * @param Schema        $schema
+     * @param NoteExtension $noteExtension
      */
-    public static function noteAssociation(Schema $schema, NoteExtension $noteExtension)
+    public static function addNoteAssociations(Schema $schema, NoteExtension $noteExtension)
     {
         $noteExtension->addNoteAssociation($schema, 'tracker_issue');
     }

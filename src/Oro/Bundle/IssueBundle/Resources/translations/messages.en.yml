@@ -16,9 +16,10 @@ issue:
     reporter: Reporter
     assignee: Assignee
     owner: Owner
-    created: Created
-    updated: Updated
+    createdAt: Created
+    updatedAt: Updated
     workflow_step: Status
+    status: Status
     subissue: Sub-issues
     parent_issue: Parent issue
     collaborator_name: Collaborator name
@@ -31,8 +32,14 @@ issue:
     cancel: Cancel
     save: Save
     create_entity: Create Issue
+    fullist: Issue full list
+    issue: Issue
     widget:
         issue_grid: User's issues
         bar_chart: User's bar chart
         grid_desc: This widget displays short issue grid
         chart_desc: This widget displays bar chart
+oro:
+    issue:
+        owner:
+            label: Issue owner

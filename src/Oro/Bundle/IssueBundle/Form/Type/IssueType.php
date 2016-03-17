@@ -5,9 +5,7 @@ namespace Oro\Bundle\IssueBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\IssueBundle\Entity\Issue;
-use Symfony\Component\Form\FormEvent;
 
 class IssueType extends AbstractType
 {
@@ -84,19 +82,6 @@ class IssueType extends AbstractType
                     'required' => false
                 ]
             );
-        //$builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData']);
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function onPreSetData(FormEvent $event)
-    {
-        /** @var Issue $issue */
-        $issue = $event->getData();
-        if ($issue && $issue->getParent()) {
-            //$event->getForm();
-        }
     }
 
     /**

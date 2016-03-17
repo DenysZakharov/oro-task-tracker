@@ -64,7 +64,7 @@ class IssuePriority
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -88,7 +88,7 @@ class IssuePriority
     /**
      * Get Label
      *
-     * @return string 
+     * @return string
      */
     public function getLabel()
     {
@@ -112,7 +112,7 @@ class IssuePriority
     /**
      * Get priority
      *
-     * @return integer 
+     * @return integer
      */
     public function getPriority()
     {

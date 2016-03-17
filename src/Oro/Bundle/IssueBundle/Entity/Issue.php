@@ -308,6 +308,9 @@ class Issue extends ExtendIssue
      */
     protected $organization;
 
+    /**
+     * Issue constructor.
+     */
     public function __construct()
     {
         parent::__construct();

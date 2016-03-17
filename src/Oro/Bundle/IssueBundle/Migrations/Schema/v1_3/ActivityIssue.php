@@ -6,14 +6,13 @@ use Doctrine\DBAL\Schema\Schema;
 
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 
-class EmailActivity implements Migration, ActivityExtensionAwareInterface
+class ActivityIssue implements Migration, ActivityExtensionAwareInterface
 {
-    /**
-     * @var ActivityExtension
-     */
+    /** @var ActivityExtension */
     protected $activityExtension;
 
     /**
@@ -33,7 +32,7 @@ class EmailActivity implements Migration, ActivityExtensionAwareInterface
     }
 
     /**
-     * Enables Email activity for Issue entity
+     * Enables Email activity for User entity
      *
      * @param Schema            $schema
      * @param ActivityExtension $activityExtension

@@ -13,7 +13,6 @@ services:
           - { name: oro_importexport.processor, type: export, entity: %issue.entity%, alias: issue }
 
     issue.importexport.strategy.issue.add_or_replace:
-        class: %orocrm_contact.importexport.strategy.group.class%
         parent: oro_importexport.strategy.configurable_add_or_replace
 
     issue.importexport.processor.import.issue:
@@ -39,5 +38,3 @@ services:
           - [setDataConverter, [@issue.importexport.template_fixture.data_converter.issue]]
         tags:
           - { name: oro_importexport.processor, type: export_template, entity: %issue.entity%, alias: issue }
-
-

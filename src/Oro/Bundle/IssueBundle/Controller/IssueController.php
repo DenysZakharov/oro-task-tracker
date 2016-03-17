@@ -28,7 +28,10 @@ class IssueController extends Controller
      */
     public function indexAction()
     {
-        return ['gridName' => 'issue-grid'];
+        return [
+            'gridName' => 'issue-grid',
+            'entity_class' => $this->container->getParameter('issue.entity')
+        ];
     }
 
     /**
