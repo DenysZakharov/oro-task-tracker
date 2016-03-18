@@ -1,0 +1,22 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{{ UI.clientButton({
+    'dataUrl': path('issue_create', {'owner': entity.id}),
+    'aCss': 'no-hash',
+    'iCss': 'icon-comment-alt',
+    'label': 'issue.create'|trans,
+    'widget': {
+        'type': 'dialog',
+        'multiple': false,
+        'options': {
+            'alias': 'issue-dialog',
+            'dialogOptions': {
+                'title': 'issue.create'|trans,
+                'allowMaximize': true,
+                'allowMinimize': true,
+                'dblclick': 'maximize',
+                'maximizedHeightDecreaseBy': 'minimize-bar',
+                'width': 1100
+            }
+        }
+    }
+}) }}

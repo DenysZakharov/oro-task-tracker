@@ -4,10 +4,12 @@
 
 {% block navButtons %}
     {% if resource_granted('issue_create') %}
+        <div class="btn-group">
         {{ UI.addButton({
             'path' : path('issue_create'),
             'entity_label': 'issue.entity'|trans
         }) }}
+        </div>
     {% endif %}
 
     {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {

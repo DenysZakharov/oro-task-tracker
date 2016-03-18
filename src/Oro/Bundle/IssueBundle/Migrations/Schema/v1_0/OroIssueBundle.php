@@ -73,5 +73,11 @@ class OroIssueBundle implements Migration
         $table->addColumn('label', 'string', ['length' => 255]);
         $table->addColumn('priority', 'integer', ['default' => '1']);
         $table->setPrimaryKey(['id']);
+        $table = $schema->createTable('issue_related');
+        $table->addColumn('issue_source', 'integer', []);
+        $table->addColumn('issue_target', 'integer', []);
+        $table->setPrimaryKey(['issue_source', 'issue_target']);
+        $table->addIndex(['issue_source'], 'IDX_7C19CEE5AD6AF443', []);
+        $table->addIndex(['issue_target'], 'IDX_8C19CEE7B49FA5DF', []);
     }
 }

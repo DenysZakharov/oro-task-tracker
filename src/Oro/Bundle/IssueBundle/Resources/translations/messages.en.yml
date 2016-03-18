@@ -43,3 +43,47 @@ oro:
     issue:
         owner:
             label: Issue owner
+        entity_label: Issue
+        Entity_plural_label: Entity plural label
+        id:
+            label: Id
+        code:
+            label: Code
+        type:
+            label: Type
+        description:
+            label: Description
+        related_issues:
+            label: Related
+        summary:
+            label: Summary
+        priority:
+            label: Priority
+        resolution:
+            label: Resolution
+        organization:
+            label: Organization
+        reporter:
+            label: Reporter
+        assignee:
+            label: Assignee
+        owner:
+            label: Owner
+        created_at:
+            label: Created
+        updated_at:
+            label: Updated
+        workflow_step:
+            label: Status
+        status:
+            label: Status
+        collaborators:
+            label: Collaborators
+        children:
+            label: Children
+        parent:
+            label: Parent
+        workflow_item:
+            label: Workflow Item
+        workflowStep:
+            label: Workflow Step

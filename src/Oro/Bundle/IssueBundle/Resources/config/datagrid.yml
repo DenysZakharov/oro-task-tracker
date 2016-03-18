@@ -1,5 +1,6 @@
 datagrid:
     issue-grid:
+        extended_entity_name: Oro\Bundle\IssueBundle\Entity\Issue
         source:
             type: orm
             acl_resource: issue_view
@@ -72,7 +73,7 @@ datagrid:
                 updatedAt:
                     data_name: issue.updatedAt
             default:
-                updated: DESC
+                updatedAt: DESC
         filters:
             columns:
                 code:
@@ -81,6 +82,33 @@ datagrid:
                 summary:
                     type:      string
                     data_name: issue.summary
+                type:
+                    type:      string
+                    data_name: issue.type
+                priority:
+                    type:      string
+                    data_name: issuePriority.name
+                status:
+                    label:     Status
+                    type:      string
+                    data_name: workflowStepLabel
+                resolution:
+                    type:      string
+                    data_name: issue.resolution
+                reporter:
+                    label:     Reporter
+                    type:      string
+                    data_name: issueReporterName
+                assignee:
+                    label:     Assignee
+                    type:      string
+                    data_name: issueAssigneeName
+                createdAt:
+                    type:      datetime
+                    data_name: issue.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: issue.updatedAt
         properties:
             id: ~
             view_link:

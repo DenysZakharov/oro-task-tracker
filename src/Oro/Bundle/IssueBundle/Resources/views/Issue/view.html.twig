@@ -22,10 +22,12 @@
         }) }}
     {% endif %}
     {% if entity.type == 'story' and resource_granted('issue_create') %}
+        <div class="btn-group">
         {{ UI.addButton({
             'path' : path('subissue_create', {'issueCode' : entity.code}),
             'entity_label': 'issue.subentity'|trans
         }) }}
+        </div>
     {% endif %}
 {% endblock navButtons %}
 
@@ -112,4 +114,13 @@
     {% set data = { 'dataBlocks': dataBlocks } %}
 
     {{ parent() }}
+    <script type="text/javascript">
+        require(['oroui/js/mediator', 'oroui/js/widget-manager'], function(mediator, widgetManager) {
+            mediator.subscribe('widget_success:note-dialog', function(widget) {
+                //mediator.trigger('datagrid:doRefresh:collaborators-grid');
+                mediator.trigger('reloadWidget:view');
+                console.log(widgetManager);
+            });
+        });
+    </script>
 {% endblock content_data %}

@@ -116,7 +116,7 @@ class IssueControllersTest extends WebTestCase
 
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('oro_issue_view', ['id' => $result['id']])
+            $this->getUrl('issue_view', ['id' => $result['id']])
         );
 
         $result = $this->client->getResponse();
