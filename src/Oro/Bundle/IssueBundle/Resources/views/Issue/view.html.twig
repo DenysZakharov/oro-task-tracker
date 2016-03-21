@@ -39,8 +39,25 @@
     'entityTitle': entity.summary
     } %}
     {{ parent() }}
-{% endblock pageHeader %}
 
+{% endblock pageHeader %}
+    {% block stats %}
+        {{ oro_widget_render({
+            'widgetType':         'block',
+            'url':                path('update_data_widget', {id: entity.id}),
+            'title': '',
+            'alias': 'update-dates-widget',
+        }) }}
+        <script type="text/javascript">
+            require(['oroui/js/mediator', 'oroui/js/widget-manager'], function (mediator, widgetManager) {
+                mediator.on('widget_success:note-dialog', function () {
+                    widgetManager.getWidgetInstanceByAlias('update-dates-widget', function (widget) {
+                        widget.render();
+                    });
+                });
+            });
+        </script>
+    {% endblock %}
 {% block content_data %}
     {% set data %}
         <div class="widget-content">
@@ -114,13 +131,5 @@
     {% set data = { 'dataBlocks': dataBlocks } %}
 
     {{ parent() }}
-    <script type="text/javascript">
-        require(['oroui/js/mediator', 'oroui/js/widget-manager'], function(mediator, widgetManager) {
-            mediator.subscribe('widget_success:note-dialog', function(widget) {
-                //mediator.trigger('datagrid:doRefresh:collaborators-grid');
-                mediator.trigger('reloadWidget:view');
-                console.log(widgetManager);
-            });
-        });
-    </script>
+
 {% endblock content_data %}

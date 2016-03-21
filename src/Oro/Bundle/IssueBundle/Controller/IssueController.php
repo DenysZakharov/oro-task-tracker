@@ -55,6 +55,46 @@ class IssueController extends Controller
     }
 
     /**
+     * @Route("/createwidget", name="issue_create_widget")
+     * @Acl(
+     *      id="issue_create",
+     *      type="entity",
+     *      class="OroIssueBundle:Issue",
+     *      permission="CREATE"
+     * )
+     * @Template("OroIssueBundle:Issue:updateWidget.html.twig")
+     * @param Request $request
+     * @return array
+     */
+    public function createWidgetAction(Request $request)
+    {
+        $formAction = $this->get('oro_entity.routing_helper')
+            ->generateUrlByRequest('issue_create_widget', $request);
+
+        return $this->update(new Issue(), $formAction, $request);
+    }
+
+    /**
+     * @Route("/updatedatawidget/{id}", name="update_data_widget")
+     * @Acl(
+     *      id="issue_view",
+     *      type="entity",
+     *      class="OroIssueBundle:Issue",
+     *      permission="VIEW"
+     * )
+     * @Template("OroIssueBundle:Issue:dataWidget.html.twig")
+     * @param Issue $issue
+     * @param Request $request
+     * @return array
+     */
+    public function updateDateWidgetAction(Issue $issue, Request $request)
+    {
+        return [
+            'entity' => $issue
+        ];
+    }
+
+    /**
      * @Route("/update/{id}", name="issue_update", requirements={"id"="\d+"})
      * @Template()
      * @Acl(

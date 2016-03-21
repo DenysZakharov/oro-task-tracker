@@ -1,6 +1,6 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {{ UI.clientButton({
-    'dataUrl': path('issue_create', {'owner': entity.id}),
+    'dataUrl': path('issue_create_widget'),
     'aCss': 'no-hash',
     'iCss': 'icon-comment-alt',
     'label': 'issue.create'|trans,
