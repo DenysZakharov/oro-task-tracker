@@ -1,0 +1,8 @@
+<div class="widget-content">
+    <ul class="inline">
+        <li>{{ 'oro.ui.created_at'|trans }}
+            : {{ entity.createdAt is defined and entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A' }}</li>
+        <li>{{ 'oro.ui.updated_at'|trans }}
+            : {{ entity.updatedAt is defined and entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
+    </ul>
+</div>
