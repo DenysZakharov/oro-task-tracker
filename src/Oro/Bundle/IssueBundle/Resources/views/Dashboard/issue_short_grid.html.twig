@@ -7,7 +7,7 @@
 
 {% block actions %}
     {% set actions = [{
-    'url': path('issue_index'),
+    'url': path('view_by_user', {'id': user.id}),
     'type': 'link',
     'label': 'issue.fullist'|trans
     }] %}
