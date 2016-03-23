@@ -11,3 +11,8 @@ services:
 #        arguments:
 #            - Oro\Bundle\IssueBundle\Entity\Issue
 #            - "@doctrine.orm.entity_manager"
+
+    oro_issue.command_filter:
+        class: Oro\Bundle\IssueBundle\Filter\CommandFilter
+        arguments:
+            - @doctrine.orm.entity_manager

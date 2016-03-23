@@ -33,7 +33,7 @@ class ProductRepositoryFunctionalTest extends WebTestCase
             'SELECT count(issue.id)  AS issues, step.label AS step_name FROM OroIssueBundle:Issue issue '.
             'LEFT JOIN OroWorkflowBundle:WorkflowStep workflowStep WITH issue.workflowStep = workflowStep '.
             'GROUP BY workflowStep.id',
-            $issues->getSqlQuery()
+            $issues->getDQL()
         );
 
         $this->assertCount(2, $issues->getQuery()->getResult());

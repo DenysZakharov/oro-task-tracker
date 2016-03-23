@@ -24,8 +24,6 @@ services:
             - @tracker_issue.form
             - @request
             - @doctrine.orm.entity_manager
-            - @oro_activity.manager
-            - @oro_entity.routing_helper
 
     issue.form.type.issue_api:
         class: %issue.form.api_type.issue.class%

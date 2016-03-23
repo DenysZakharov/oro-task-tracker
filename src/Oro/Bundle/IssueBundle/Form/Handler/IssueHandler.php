@@ -6,10 +6,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\FormBundle\Utils\FormUtils;
-use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
-use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\IssueBundle\Entity\Issue;
 
 class IssueHandler
@@ -30,35 +26,18 @@ class IssueHandler
     protected $manager;
 
     /**
-     * @var ActivityManager
-     */
-    protected $activityManager;
-
-    /**
-     * @var EntityRoutingHelper
-     */
-    protected $entityRoutingHelper;
-
-
-    /**
      * @param FormInterface $form
      * @param Request $request
      * @param ObjectManager $manager
-     * @param ActivityManager $activityManager
-     * @param EntityRoutingHelper $entityRoutingHelper
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        ObjectManager $manager,
-        ActivityManager $activityManager,
-        EntityRoutingHelper $entityRoutingHelper
+        ObjectManager $manager
     ) {
         $this->form = $form;
         $this->request = $request;
         $this->manager = $manager;
-        $this->activityManager = $activityManager;
-        $this->entityRoutingHelper = $entityRoutingHelper;
     }
 
     /**
@@ -70,21 +49,6 @@ class IssueHandler
      */
     public function process(Issue $entity, $currentUser)
     {
-        $action = $this->entityRoutingHelper->getAction($this->request);
-        $targetEntityClass = $this->entityRoutingHelper->getEntityClassName($this->request);
-        $targetEntityId = $this->entityRoutingHelper->getEntityId($this->request);
-
-        if ($targetEntityClass
-            && !$entity->getId()
-            && $this->request->getMethod() === 'GET'
-            && $action === 'assign'
-            && is_a($targetEntityClass, 'Oro\Bundle\UserBundle\Entity\User', true)
-        ) {
-            $entity->setOwner(
-                $this->entityRoutingHelper->getEntity($targetEntityClass, $targetEntityId)
-            );
-            FormUtils::replaceField($this->form, 'owner', ['read_only' => true]);
-        }
         $this->checkForm($entity, $currentUser);
         $this->form->setData($entity);
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {

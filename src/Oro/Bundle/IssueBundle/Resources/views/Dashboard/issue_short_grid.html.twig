@@ -7,7 +7,7 @@
 
 {% block actions %}
     {% set actions = [{
-    'url': path('view_by_user', {'id': user.id}),
+    'url': path('issue_index', {'grid':{'issue-grid':{'f':{collaborator:{'value':user.firstName}}}|url_encode},}),
     'type': 'link',
     'label': 'issue.fullist'|trans
     }] %}

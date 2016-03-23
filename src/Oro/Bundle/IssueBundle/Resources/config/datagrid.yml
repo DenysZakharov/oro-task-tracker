@@ -17,6 +17,7 @@ datagrid:
                     - issue.createdAt
                     - issue.updatedAt
                     - workflowStep.label as workflowStepLabel
+                    - collaborators.firstName as collaboratorName
                 from:
                     - { table: Oro\Bundle\IssueBundle\Entity\Issue, alias: issue }
 
@@ -27,6 +28,7 @@ datagrid:
                         - { join: issue.workflowStep, alias: workflowStep }
                         - { join: issue.reporter, alias: issueReporter }
                         - { join: issue.assignee, alias: issueAssignee }
+                        - { join: issue.collaborators, alias: collaborators }
         columns:
             code:
                 label:         issue.code
@@ -86,22 +88,34 @@ datagrid:
                     type:      string
                     data_name: issue.type
                 priority:
-                    type:      string
-                    data_name: issuePriority.name
+                    type:      choice
+                    data_name: issuePriority.code
+                    options:
+                        field_options:
+                          choices: @oro_issue.command_filter->getPriorityChoices
                 status:
                     label:     Status
                     type:      string
                     data_name: workflowStepLabel
                 resolution:
-                    type:      string
-                    data_name: issue.resolution
+                    type:      choice
+                    data_name: issueResolution.code
+                    options:
+                        field_options:
+                            choices: @oro_issue.command_filter->getResolutionChoices
                 reporter:
                     label:     Reporter
-                    type:      string
+                    type:      choice
+                    options:
+                        field_options:
+                            choices: @oro_issue.command_filter->getUserChoices
                     data_name: issueReporterName
                 assignee:
                     label:     Assignee
-                    type:      string
+                    type:      entity
+                    options:
+                        field_options:
+                            class:     Oro\Bundle\UserBundle\Entity\User
                     data_name: issueAssigneeName
                 createdAt:
                     type:      datetime
@@ -109,6 +123,10 @@ datagrid:
                 updatedAt:
                     type:      datetime
                     data_name: issue.updatedAt
+                collaborator:
+                    label:     Collaborators
+                    type:      string
+                    data_name: collaboratorName
         properties:
             id: ~
             view_link:

@@ -39,6 +39,8 @@ issue:
         bar_chart: User's bar chart
         grid_desc: This widget displays short issue grid
         chart_desc: This widget displays bar chart
+    entity:
+        label: Issue
 oro:
     issue:
         owner:
@@ -87,3 +89,4 @@ oro:
             label: Workflow Item
         workflowStep:
             label: Workflow Step
+        entity_plural_label: Entity plural label
